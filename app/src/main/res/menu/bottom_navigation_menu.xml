@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_item_map"
+        android:icon="@drawable/ic_bottom_nav_map_24"
+        android:title="Карта"
+        />
+
+    <item
+        android:id="@+id/nav_item_events"
+        android:icon="@drawable/ic_bottom_nav_events_24"
+        android:title="Мероприятия"
+        />
+
+    <item
+        android:id="@+id/nav_item_feed"
+        android:icon="@drawable/ic_bottom_nav_feed_24"
+        android:title="Лента"
+        />
+
+</menu>
