@@ -1,10 +1,8 @@
-package com.example.remap
+package com.example.remap.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import com.yandex.mapkit.MapKitFactory
-import com.yandex.maps.mobile.BuildConfig
+import androidx.appcompat.app.AppCompatActivity
+import com.example.remap.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

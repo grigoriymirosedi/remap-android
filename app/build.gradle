@@ -44,12 +44,14 @@ android {
 
 dependencies {
 
+    def nav_version = "2.7.0"
+
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
-    //Yandex MapsKit
+    // Yandex MapsKit
     implementation 'com.yandex.android:maps.mobile:4.3.1-full'
 
     testImplementation 'junit:junit:4.13.2'
