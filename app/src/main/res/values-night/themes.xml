@@ -29,7 +29,8 @@
         <item name="colorSurfaceInverse">@color/md_theme_dark_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/md_theme_dark_inversePrimary</item>
 
-        <!-- defines status bar color -->
-        <item name="colorPrimaryDark">@color/md_theme_dark_primaryContainer</item>
+        <!-- defines transparent status bar color -->
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 </resources>
