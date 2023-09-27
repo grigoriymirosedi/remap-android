@@ -1,6 +1,7 @@
-package com.example.remap
+package com.example.remap.core
 
 import android.app.Application
+import com.example.remap.BuildConfig
 import com.yandex.mapkit.MapKitFactory
 
 class App: Application() {

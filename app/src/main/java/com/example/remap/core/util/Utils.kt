@@ -1,4 +1,4 @@
-package com.example.remap.common
+package com.example.remap.core.util
 
 import android.content.Context
 import android.graphics.Bitmap
