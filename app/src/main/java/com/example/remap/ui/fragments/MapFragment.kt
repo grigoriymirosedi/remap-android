@@ -19,6 +19,7 @@ import com.example.remap.databinding.FragmentMapBinding
 import com.example.remap.domain.models.RecyclePoint
 import com.example.remap.ui.viewmodels.MapFragmentViewModel
 import com.example.remap.ui.viewmodels.ViewModelProviderFactory
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory

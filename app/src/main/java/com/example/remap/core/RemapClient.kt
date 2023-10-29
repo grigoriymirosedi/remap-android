@@ -17,10 +17,10 @@ object RemapClient {
             .build()
 
         Retrofit.Builder().
-        baseUrl(Constants.BASE_URL).
-        addConverterFactory(GsonConverterFactory.create()).
-        client(client).
-        build()
+            baseUrl(Constants.BASE_URL).
+            addConverterFactory(GsonConverterFactory.create()).
+            client(client).
+            build()
     }
     fun provideRemapRecycleAPI(): RemapRecycleAPI = retrofit.create(RemapRecycleAPI::class.java)
 
