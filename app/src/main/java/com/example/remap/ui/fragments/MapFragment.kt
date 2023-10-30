@@ -1,7 +1,6 @@
 package com.example.remap.ui.fragments
 
 import android.os.Bundle
-import android.renderscript.ScriptGroup.Input
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +18,6 @@ import com.example.remap.databinding.FragmentMapBinding
 import com.example.remap.domain.models.RecyclePoint
 import com.example.remap.ui.viewmodels.MapFragmentViewModel
 import com.example.remap.ui.viewmodels.ViewModelProviderFactory
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
