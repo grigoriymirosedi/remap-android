@@ -8,9 +8,13 @@
     <com.yandex.mapkit.mapview.MapView
         android:id="@+id/mapview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:apiKey="${GEOCODER_API_KEY}"/>
 
     <include
-        layout="@layout/placemark_info_bottom_sheet"/>
+        layout="@layout/placemark_info_bottom_sheet" />
+
+    <include
+        layout="@layout/placemark_setup_bottom_sheet" />
 
 </FrameLayout>

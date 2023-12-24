@@ -37,8 +37,11 @@ class MapFragment : Fragment() {
     private var _binding: FragmentMapBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var bottomSheet: FrameLayout
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<FrameLayout>
+    private lateinit var placeMarkDetailsBottomSheet: FrameLayout
+    private lateinit var placeMarkDetailsBottomSheetBehavior: BottomSheetBehavior<FrameLayout>
+
+    private lateinit var placeMarkSetUpBottomSheet: FrameLayout
+    private lateinit var placeMarkSetUpBottomSheetBehavior: BottomSheetBehavior<FrameLayout>
 
     private var recyclePointList: List<RecyclePoint> = listOf()
     private lateinit var recyclePinsCollection: MapObjectCollection
@@ -63,12 +66,18 @@ class MapFragment : Fragment() {
         val map = mapView.mapWindow.map
         mapInitialize(map)
 
-        bottomSheet = view.findViewById(R.id.placemark_info_bottom_sheet)
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
-        bottomSheetSetUp(bottomSheetBehavior)
+        //Bottom sheet to set up placemark
+        placeMarkSetUpBottomSheet = view.findViewById(R.id.placemark_setup_bottom_sheet)
+        placeMarkSetUpBottomSheetBehavior = BottomSheetBehavior.from(placeMarkSetUpBottomSheet)
+        placeMarkSetUpBottomSheetSetUp(placeMarkSetUpBottomSheetBehavior)
+
+        // Bottom sheet to display placemark info
+        placeMarkDetailsBottomSheet = view.findViewById(R.id.placemark_info_bottom_sheet)
+        placeMarkDetailsBottomSheetBehavior = BottomSheetBehavior.from(placeMarkDetailsBottomSheet)
+        placeMarkDetailsBottomSheetSetUp(placeMarkDetailsBottomSheetBehavior)
 
         val mapObjectTapListener = MapObjectTapListener { p0, p1 ->
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            placeMarkDetailsBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             true
         }
 
@@ -100,9 +109,15 @@ class MapFragment : Fragment() {
         })
     }
 
-    private fun bottomSheetSetUp(bottomSheetBehavior: BottomSheetBehavior<FrameLayout>) {
+    private fun placeMarkDetailsBottomSheetSetUp(bottomSheetBehavior: BottomSheetBehavior<FrameLayout>) {
         bottomSheetBehavior.apply {
             peekHeight = 400
+            state = BottomSheetBehavior.STATE_HIDDEN
+        }
+    }
+
+    private fun placeMarkSetUpBottomSheetSetUp(bottomSheetBehavior: BottomSheetBehavior<FrameLayout>) {
+        bottomSheetBehavior.apply {
             state = BottomSheetBehavior.STATE_HIDDEN
         }
     }
@@ -110,11 +125,12 @@ class MapFragment : Fragment() {
     private fun mapInitialize(map: Map) {
         val inputTapListener = object: InputListener {
             override fun onMapTap(p0: Map, p1: Point) {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                placeMarkDetailsBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                placeMarkSetUpBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
             }
 
             override fun onMapLongTap(p0: Map, p1: Point) {
-                Toast.makeText(requireContext(), "${p1.latitude}, ${p1.longitude}", Toast.LENGTH_SHORT).show()
+                placeMarkSetUpBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             }
         }
 
