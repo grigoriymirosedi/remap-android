@@ -14,7 +14,7 @@ class EventDecorator(
     private val colorValues = arrayOf(
         Color.parseColor("#98bff4"),
         Color.parseColor("#e7aec9"),
-        Color.parseColor("#e3e7f8")
+        Color.parseColor("#d3d3d3")
     )
 
     override fun shouldDecorate(day: CalendarDay?): Boolean {
