@@ -31,10 +31,33 @@ class CalendarFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         materialCalendarView = binding.calendarView
 
-        //Need to change it later
-        var example_event_date = listOf<CalendarDay>(CalendarDay.from(2023, 10, 31))
-        materialCalendarView.addDecorator(EventDecorator(Color.GREEN, example_event_date))
+        //Need to change it later with get response
+        val dayInstanceMap: HashMap<CalendarDay, Int> = hashMapOf(
+            CalendarDay.from(2024, 1, 28) to 4,
+            CalendarDay.from(2024, 1 ,26) to 2,
+            CalendarDay.from(2024, 1, 29) to 1,
+            CalendarDay.from(2024, 1, 14) to 1,
+            CalendarDay.from(2024, 1, 13) to 1,
+            )
 
+        val singleDotDates = dayInstanceMap.filter { it.value == 1 }
+        val doubleDotDates = dayInstanceMap.filter { it.value == 2 }
+        val tripleDotDates = dayInstanceMap.filter { it.value >= 3 }
+
+        for(decorator in singleDotDates) {
+            val currentDecorator = EventDecorator(Color.GREEN, 7.5f, singleDotDates, decorator.value)
+            materialCalendarView.addDecorator(currentDecorator)
+        }
+
+        for(decorator in doubleDotDates) {
+            val currentDecorator = EventDecorator(Color.GREEN, 7.5f, doubleDotDates, decorator.value)
+            materialCalendarView.addDecorator(currentDecorator)
+        }
+
+        for(decorator in tripleDotDates) {
+            val currentDecorator = EventDecorator(Color.GREEN, 7.5f, tripleDotDates, decorator.value)
+            materialCalendarView.addDecorator(currentDecorator)
+        }
     }
 
 }
