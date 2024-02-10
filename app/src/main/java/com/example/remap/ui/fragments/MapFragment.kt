@@ -1,17 +1,22 @@
 package com.example.remap.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.remap.R
 import com.example.remap.core.RemapClient
 import com.example.remap.core.util.Resource
+import com.example.remap.core.util.copyToClipboard
 import com.example.remap.core.util.getBitmapFromVectorDrawable
 import com.example.remap.data.repository.RecyclePointRepositoryImpl
 import com.example.remap.databinding.FragmentMapBinding
@@ -110,6 +115,14 @@ class MapFragment : Fragment() {
     }
 
     private fun placeMarkDetailsBottomSheetSetUp(bottomSheetBehavior: BottomSheetBehavior<FrameLayout>) {
+
+        val coordinateTextView = (placeMarkSetUpBottomSheet[1] as LinearLayout)[1] as TextView
+
+        coordinateTextView.setOnClickListener {
+            val copyText = coordinateTextView.text.toString().substring(11)
+            requireContext().copyToClipboard(copyText)
+        }
+
         bottomSheetBehavior.apply {
             peekHeight = 400
             state = BottomSheetBehavior.STATE_HIDDEN
