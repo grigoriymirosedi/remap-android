@@ -12,9 +12,11 @@
         android:apiKey="${GEOCODER_API_KEY}"/>
 
     <include
+        android:id="@+id/placemark_info_bs"
         layout="@layout/placemark_info_bottom_sheet" />
 
     <include
+        android:id="@+id/placemark_setup_bs"
         layout="@layout/placemark_setup_bottom_sheet" />
 
 </FrameLayout>

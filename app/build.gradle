@@ -60,12 +60,15 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
 
     // Yandex MapsKit
-    implementation 'com.yandex.android:maps.mobile:4.4.0-lite'
+    implementation 'com.yandex.android:maps.mobile:4.4.0-full'
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.5.0'
+
+    //Picasso
+    implementation 'com.squareup.picasso:picasso:2.8'
 
     //Custom calendarview
     implementation 'com.github.prolificinteractive:material-calendarview:2.0.0'

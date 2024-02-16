@@ -21,8 +21,12 @@ fun Context.getBitmapFromVectorDrawable(drawableId: Int): Bitmap? {
     return bitmap
 }
 
-fun Context.copyToClipboard(text: CharSequence){
+fun Context.copyToClipboard(text: CharSequence) {
     val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     val clip = ClipData.newPlainText("label",text)
     clipboard.setPrimaryClip(clip)
+}
+
+fun String.toCoordinateFormat(): String {
+    return this.take(8)
 }
