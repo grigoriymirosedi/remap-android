@@ -1,5 +1,7 @@
 package com.example.remap.core.util
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -17,4 +19,14 @@ fun Context.getBitmapFromVectorDrawable(drawableId: Int): Bitmap? {
     drawable.draw(canvas)
 
     return bitmap
+}
+
+fun Context.copyToClipboard(text: CharSequence) {
+    val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    val clip = ClipData.newPlainText("label",text)
+    clipboard.setPrimaryClip(clip)
+}
+
+fun String.toCoordinateFormat(): String {
+    return this.take(8)
 }
