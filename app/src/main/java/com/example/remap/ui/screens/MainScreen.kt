@@ -1,5 +1,7 @@
 package com.example.remap.ui.screens
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -10,6 +12,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.remap.ui.screens.calendar.CalendarScreen
+import com.example.remap.ui.screens.map.MapScreen
 import com.example.remap.ui.utils.BottomNavigationBar
 import com.example.remap.ui.utils.Screens
 
@@ -28,7 +32,13 @@ fun MainScreen() {
         NavHost(
             modifier = Modifier.padding(it),
             startDestination = Screens.Home.route,
-            navController = navController
+            navController = navController,
+            enterTransition = {
+                EnterTransition.None
+            },
+            exitTransition = {
+                ExitTransition.None
+            }
         ) {
             composable(Screens.Home.route) {
                 //Replace with specific screen
@@ -37,12 +47,12 @@ fun MainScreen() {
 
             composable(Screens.Map.route) {
                 //Replace with specific screen
-                SampleScreen( "Карта")
+                MapScreen()
             }
 
             composable(Screens.Calendar.route) {
                 //Replace with specific screen
-                SampleScreen( "Мероприятия")
+                CalendarScreen()
             }
 
             composable(Screens.Feed.route) {
