@@ -1,22 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.yandex.mapkit.mapview.MapView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mapview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.MapFragment">
-
-    <com.yandex.mapkit.mapview.MapView
-        android:id="@+id/mapview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:apiKey="${GEOCODER_API_KEY}"/>
-
-    <include
-        android:id="@+id/placemark_info_bs"
-        layout="@layout/placemark_info_bottom_sheet" />
-
-    <include
-        android:id="@+id/placemark_setup_bs"
-        layout="@layout/placemark_setup_bottom_sheet" />
-
-</FrameLayout>
+    android:apiKey="${GEOCODER_API_KEY}" />

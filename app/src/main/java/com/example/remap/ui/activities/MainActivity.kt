@@ -1,24 +1,20 @@
 package com.example.remap.ui.activities
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
-import com.example.remap.R
-import com.example.remap.databinding.ActivityMainBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import com.example.remap.ui.screens.MainScreen
+import com.example.remap.ui.theme.RemapTheme
+import com.yandex.mapkit.MapKitFactory
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
-    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        val navHostFragment = supportFragmentManager.findFragmentById(binding.navHostFragment.id) as NavHostFragment
-        val navController = navHostFragment.navController
-        val navView: BottomNavigationView = binding.bottomNavigationView
-        navView.setupWithNavController(navController)
+        setContent {
+            RemapTheme {
+                MainScreen()
+            }
+        }
     }
 }
