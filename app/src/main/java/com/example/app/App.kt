@@ -1,9 +1,11 @@
-package com.example.remap.core
+package com.example.app
 
 import android.app.Application
 import com.example.remap.BuildConfig
 import com.yandex.mapkit.MapKitFactory
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class App: Application() {
     override fun onCreate() {
         super.onCreate()
