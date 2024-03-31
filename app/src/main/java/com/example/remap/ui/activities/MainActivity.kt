@@ -6,7 +6,10 @@ import androidx.activity.compose.setContent
 import com.example.remap.ui.screens.MainScreen
 import com.example.remap.ui.theme.RemapTheme
 import com.yandex.mapkit.MapKitFactory
+import dagger.hilt.EntryPoint
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
