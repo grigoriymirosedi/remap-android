@@ -1,6 +1,5 @@
 package com.example.remap.ui.screens.calendar
 
-import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -11,10 +10,7 @@ import com.example.remap.ui.screens.calendar.utils.DaysOfWeekTitle
 import com.example.remap.ui.screens.calendar.utils.MonthTitle
 import com.kizitonwose.calendar.compose.HorizontalCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
-import com.kizitonwose.calendar.core.atStartOfMonth
-import com.kizitonwose.calendar.core.daysOfWeek
 import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
-import java.time.LocalDate
 import java.time.YearMonth
 
 @Composable
@@ -34,7 +30,7 @@ fun CalendarScreen(modifier: Modifier = Modifier.fillMaxSize()) {
 
     HorizontalCalendar(
         state = state,
-        dayContent = { Day(it) },
+        dayContent = { Day(it, eventNum = 3) },
         monthHeader = { month ->
             val daysOfWeek = month.weekDays.first().map { it.date.dayOfWeek }
             MonthTitle(month = month.yearMonth.month)

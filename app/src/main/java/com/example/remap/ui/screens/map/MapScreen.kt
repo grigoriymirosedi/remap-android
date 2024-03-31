@@ -49,18 +49,18 @@ fun MapScreen(
                         CameraPosition(Point(47.227188, 39.593677), 17.0f, 0.0f, 0.0f),
                     )
                 }
-
-                Log.d("123123", recyclePoints.value.toString())
-
-                recyclePoints.value.forEach {
-                    recyclePointCollection.addPlacemark().apply {
-                        geometry = Point(it.latitude, it.longitude)
-                        setIcon(imageProvider)
-                    }
-                }
             }
         },
         modifier
-    ) { mapView -> onLoad?.invoke(mapView) }
+    ) {
+        mapView -> onLoad?.invoke(mapView)
+
+        recyclePoints.value.forEach {
+            recyclePointCollection.addPlacemark().apply {
+                geometry = Point(it.latitude, it.longitude)
+                setIcon(imageProvider)
+            }
+        }
+    }
 
 }
