@@ -3,6 +3,7 @@ package com.example.remap.ui.screens.calendar
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.remap.data.remote.dto.RecyclePointDTO
+import com.example.remap.data.remote.dto.toRecyclePoint
 import com.example.remap.domain.models.RecyclePoint
 import com.example.remap.domain.repository.RecyclePointRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
