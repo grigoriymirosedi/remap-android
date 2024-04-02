@@ -69,7 +69,7 @@ dependencies {
     implementation 'androidx.compose.material3:material3:1.2.1'
     implementation 'androidx.compose.ui:ui-tooling-preview'
     debugImplementation 'androidx.compose.ui:ui-tooling'
-    implementation 'androidx.compose.ui:ui'
+    implementation 'androidx.compose.ui:ui:1.6.4'
     implementation 'androidx.compose.ui:ui-graphics'
     implementation "androidx.navigation:navigation-compose:2.7.7"
     implementation 'androidx.compose.material:material-icons-core'
@@ -94,8 +94,8 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:4.5.0'
 
     // Calendar library
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
-    implementation 'com.kizitonwose.calendar:compose:2.0.4'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.5.0'
+    implementation 'com.kizitonwose.calendar:compose:2.5.0'
 
     // Viewmodel
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'

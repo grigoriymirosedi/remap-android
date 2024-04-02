@@ -1,7 +1,11 @@
 package com.example.remap.di
 
+import com.example.database.core.serializers.LocalDateAdapter
+import com.example.database.core.serializers.LocalTimeAdapter
 import com.example.remap.core.util.Constants
 import com.example.remap.data.remote.api.RemapRecycleAPI
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,6 +15,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.time.LocalDate
+import java.time.LocalTime
 import javax.inject.Singleton
 
 @Module
@@ -26,12 +32,12 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideRetrofit(
-        converter: Converter.Factory,
-        loggingClient: OkHttpClient
+        loggingClient: OkHttpClient,
+        gson: Gson
     ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
-            .addConverterFactory(converter)
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .client(loggingClient)
             .build()
     }
@@ -47,7 +53,10 @@ object NetworkModule {
     }
 
     @Provides
-    fun provideConverter(): Converter.Factory {
-        return GsonConverterFactory.create()
+    fun provideGsonConverter(): Gson {
+        return GsonBuilder()
+            .registerTypeAdapter(LocalDate::class.java, LocalDateAdapter())
+            .registerTypeAdapter(LocalTime::class.java, LocalTimeAdapter())
+            .create()
     }
 }
