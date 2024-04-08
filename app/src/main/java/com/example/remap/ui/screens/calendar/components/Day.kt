@@ -1,5 +1,6 @@
-package com.example.remap.ui.screens.calendar.utils
+package com.example.remap.ui.screens.calendar.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,9 +18,9 @@ import androidx.compose.ui.unit.dp
 import com.kizitonwose.calendar.core.CalendarDay
 
 @Composable
-fun Day(day: CalendarDay, eventNum: Int = 0) {
+fun Day(day: CalendarDay, eventNum: Int = 0, onClick: (CalendarDay) -> Unit) {
     Column(
-        modifier = Modifier.aspectRatio(1f),
+        modifier = Modifier.aspectRatio(1f).clickable { onClick(day) },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {

@@ -1,4 +1,4 @@
-package com.example.remap.ui.screens.calendar.utils
+package com.example.remap.ui.screens.calendar.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
