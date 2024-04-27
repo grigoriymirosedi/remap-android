@@ -27,7 +27,7 @@ fun TextWithIcon(
     contentColor: Color,
     textAlign: TextAlign = TextAlign.Start
 ) {
-    Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {
+    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         Image(imageVector = icon, contentDescription = null, colorFilter = ColorFilter.tint(contentColor))
         Spacer(modifier = Modifier.width(4.dp))
         Text(text = text, fontSize = fontSize, color = contentColor, textAlign = textAlign)
