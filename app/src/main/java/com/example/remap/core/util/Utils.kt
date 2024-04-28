@@ -6,6 +6,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import androidx.core.content.ContextCompat
+import com.yandex.mapkit.geometry.Point
 
 fun Context.getBitmapFromVectorDrawable(drawableId: Int): Bitmap? {
     val drawable = ContextCompat.getDrawable(this, drawableId) ?: return null
@@ -25,6 +26,10 @@ fun Context.copyToClipboard(text: CharSequence) {
     val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     val clip = ClipData.newPlainText("label",text)
     clipboard.setPrimaryClip(clip)
+}
+
+fun Point.toStringLatLngFormat(): String {
+    return "${this.latitude} ${this.longitude}"
 }
 
 fun String.toCoordinateFormat(): String {

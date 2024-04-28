@@ -14,6 +14,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.remap.ui.screens.calendar.CalendarScreen
 import com.example.remap.ui.screens.map.MapScreen
+import com.example.remap.ui.screens.map.components.AddPlacemarkScreen
 import com.example.remap.ui.utils.BottomNavigationBar
 import com.example.remap.ui.utils.Screens
 
@@ -47,7 +48,15 @@ fun MainScreen() {
 
             composable(Screens.Map.route) {
                 //Replace with specific screen
-                MapScreen()
+                MapScreen(
+                    onNavigateToAddPlacemarkScreen = {
+                        navController.navigate(route = Screens.AddPlacemark.route)
+                    }
+                )
+            }
+
+            composable(Screens.AddPlacemark.route) {
+                AddPlacemarkScreen()
             }
 
             composable(Screens.Calendar.route) {
