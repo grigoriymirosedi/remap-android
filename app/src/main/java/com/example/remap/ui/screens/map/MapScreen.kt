@@ -49,7 +49,7 @@ fun MapScreen(
     modifier: Modifier = Modifier,
     viewModel: MapViewModel = hiltViewModel(),
     onLoad: ((map: MapView) -> Unit)? = null,
-    onNavigateToAddPlacemarkScreen: () -> Unit
+    onNavigateToAddPlacemarkScreen: () -> Unit,
 ) {
 
     val context = LocalContext.current
@@ -151,7 +151,7 @@ fun MapScreen(
                 ?.firstOrNull { it.kinds.contains(Address.Component.Kind.AREA) }
                 ?.name!!
 
-            val details = if((streetName != null) && (houseName != null))
+            val details = if ((streetName != null) && (houseName != null))
                 "$streetName $houseName"
             else districtName ?: areaName
 
@@ -189,8 +189,8 @@ fun MapScreen(
         },
         modifier
     ) {
+        mapView ->
 
-            mapView ->
         onLoad?.invoke(mapView)
 
         recyclePoints.value.forEach {
@@ -200,6 +200,8 @@ fun MapScreen(
                 setIcon(imageProvider)
             }.addTapListener(mapObjectTapListener)
         }
+        //TODO: change it later
+        mapView.map.addInputListener(inputListener)
     }
 
 }
