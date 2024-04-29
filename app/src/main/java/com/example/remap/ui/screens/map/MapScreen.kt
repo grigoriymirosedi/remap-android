@@ -2,7 +2,6 @@ package com.example.remap.ui.screens.map
 
 import android.widget.Toast
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -39,7 +38,6 @@ import com.yandex.mapkit.search.Session
 import com.yandex.mapkit.search.ToponymObjectMetadata
 import com.yandex.runtime.Error
 import com.yandex.runtime.image.ImageProvider
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import rememberMapViewWithLifecycle
 
@@ -65,6 +63,8 @@ fun MapScreen(
     val recyclePoints = viewModel.recyclePoints.collectAsState()
 
     val coroutineScope = rememberCoroutineScope()
+
+    var tappedPlaceMark: MapObject? by remember { mutableStateOf(null) }
 
     var recyclePointData by remember { mutableStateOf<RecyclePoint?>(null) }
 
@@ -102,7 +102,12 @@ fun MapScreen(
                     onNavigateToAddPlacemarkScreen()
                 }
             },
-            onDismissRequest = { showPlaceMarkDetailsInfoBottomSheet = false }
+            onDismissRequest = {
+                coroutineScope.launch {
+                    mapViewState.map.mapObjects.remove(tappedPlaceMark!!)
+                    showPlaceMarkDetailsInfoBottomSheet = false
+                }
+            }
         )
     }
 
@@ -115,46 +120,22 @@ fun MapScreen(
     val searchListener = object : Session.SearchListener {
         override fun onSearchResponse(response: Response) {
 
-            val coordinates = response.collection.children.firstOrNull()?.obj
-                ?.geometry
-                ?.firstOrNull()
-                ?.point!!
-
-            val streetName = response.collection.children.firstOrNull()?.obj
-                ?.metadataContainer
-                ?.getItem(ToponymObjectMetadata::class.java)
-                ?.address
-                ?.components
-                ?.firstOrNull { it.kinds.contains(Address.Component.Kind.STREET) }
-                ?.name
-            val houseName = response.collection.children.firstOrNull()?.obj
-                ?.metadataContainer
-                ?.getItem(ToponymObjectMetadata::class.java)
-                ?.address
-                ?.components
-                ?.firstOrNull { it.kinds.contains(Address.Component.Kind.HOUSE) }
-                ?.name
-
-            val districtName = response.collection.children.firstOrNull()?.obj
-                ?.metadataContainer
-                ?.getItem(ToponymObjectMetadata::class.java)
-                ?.address
-                ?.components
-                ?.firstOrNull { it.kinds.contains(Address.Component.Kind.DISTRICT) }
-                ?.name
-
-            val areaName = response.collection.children.firstOrNull()?.obj
-                ?.metadataContainer
-                ?.getItem(ToponymObjectMetadata::class.java)
-                ?.address
-                ?.components
-                ?.firstOrNull { it.kinds.contains(Address.Component.Kind.AREA) }
-                ?.name!!
+            val firstChild = response.collection.children.firstOrNull()?.obj
+            val metadata =
+                firstChild?.metadataContainer?.getItem(ToponymObjectMetadata::class.java)?.address
+            val coordinates = firstChild?.geometry?.firstOrNull()?.point!!
+            val streetName =
+                metadata?.components?.find { it.kinds.contains(Address.Component.Kind.STREET) }?.name
+            val houseName =
+                metadata?.components?.find { it.kinds.contains(Address.Component.Kind.HOUSE) }?.name
+            val districtName =
+                metadata?.components?.find { it.kinds.contains(Address.Component.Kind.DISTRICT) }?.name
+            val areaName =
+                metadata?.components?.find { it.kinds.contains(Address.Component.Kind.AREA) }?.name!!
 
             val details = if ((streetName != null) && (houseName != null))
                 "$streetName $houseName"
             else districtName ?: areaName
-
 
             placeMarkDetails = PlacemarkDetails(details = details, coordinates = coordinates)
 
@@ -173,12 +154,13 @@ fun MapScreen(
         }
 
         override fun onMapLongTap(map: Map, point: Point) {
+            tappedPlaceMark = mapViewState.map.mapObjects.addPlacemark(point, imageProvider)
             searchManager.submit(point, 16, SearchOptions(), searchListener)
         }
     }
 
     AndroidView(
-        {
+        factory = {
             mapViewState.apply {
                 mapWindow.map.apply {
                     move(
@@ -187,21 +169,21 @@ fun MapScreen(
                 }.addInputListener(inputListener)
             }
         },
-        modifier
-    ) {
-        mapView ->
+        modifier = modifier,
+        update = { mapView ->
 
-        onLoad?.invoke(mapView)
+            onLoad?.invoke(mapView)
 
-        recyclePoints.value.forEach {
-            recyclePointCollection.addPlacemark().apply {
-                geometry = Point(it.latitude, it.longitude)
-                userData = it
-                setIcon(imageProvider)
-            }.addTapListener(mapObjectTapListener)
+            recyclePoints.value.forEach {
+                recyclePointCollection.addPlacemark().apply {
+                    geometry = Point(it.latitude, it.longitude)
+                    userData = it
+                    setIcon(imageProvider)
+                }.addTapListener(mapObjectTapListener)
+            }
+
+            //TODO: change it later (adding multiple listeners)
+            //mapView.map.addInputListener(inputListener)
         }
-        //TODO: change it later
-        mapView.map.addInputListener(inputListener)
-    }
-
+    )
 }
