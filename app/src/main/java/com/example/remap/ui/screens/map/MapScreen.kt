@@ -16,6 +16,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.remap.R
 import com.example.remap.core.util.getBitmapFromVectorDrawable
+import com.example.remap.core.util.toStringLatLngFormat
 import com.example.remap.domain.models.PlacemarkDetails
 import com.example.remap.domain.models.RecyclePoint
 import com.example.remap.ui.screens.calendar.MapViewModel
@@ -47,7 +48,7 @@ fun MapScreen(
     modifier: Modifier = Modifier,
     viewModel: MapViewModel = hiltViewModel(),
     onLoad: ((map: MapView) -> Unit)? = null,
-    onNavigateToAddPlacemarkScreen: () -> Unit,
+    onNavigateToAddPlacemarkScreen: (String, Double, Double) -> Unit,
 ) {
 
     val context = LocalContext.current
@@ -99,7 +100,11 @@ fun MapScreen(
                 coroutineScope.launch {
                     showPlaceMarkDetailsInfoBottomSheet = false
                     placemarkDetailsBottomSheet.hide()
-                    onNavigateToAddPlacemarkScreen()
+                    onNavigateToAddPlacemarkScreen(
+                        placeMarkDetails!!.details,
+                        placeMarkDetails!!.coordinates.latitude,
+                        placeMarkDetails!!.coordinates.longitude
+                    )
                 }
             },
             onDismissRequest = {

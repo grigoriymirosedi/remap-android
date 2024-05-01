@@ -35,3 +35,11 @@ fun Point.toStringLatLngFormat(): String {
 fun String.toCoordinateFormat(): String {
     return this.take(8)
 }
+
+fun String.toRightArgumentFormat(): String {
+    return this.replace("/", "@")
+}
+
+fun String.toPlacemarkAddressFormat(): String {
+    return this.replace("@", "/")
+}
