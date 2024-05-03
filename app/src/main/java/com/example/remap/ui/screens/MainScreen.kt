@@ -72,7 +72,8 @@ fun MainScreen() {
                 AddPlacemarkScreen(
                     placeMarkDetails = placemarkDetails ?: "",
                     latitude = latitude!!.toDouble(),
-                    longitude = longitude!!.toDouble()
+                    longitude = longitude!!.toDouble(),
+                    onClick = {}
                 )
             }
 
