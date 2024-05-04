@@ -8,12 +8,17 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.remap.core.util.toPlacemarkAddressFormat
+import com.example.remap.core.util.toRightArgumentFormat
 import com.example.remap.ui.screens.calendar.CalendarScreen
 import com.example.remap.ui.screens.map.MapScreen
+import com.example.remap.ui.screens.map.AddPlacemarkScreen
 import com.example.remap.ui.utils.BottomNavigationBar
 import com.example.remap.ui.utils.Screens
 
@@ -47,7 +52,29 @@ fun MainScreen() {
 
             composable(Screens.Map.route) {
                 //Replace with specific screen
-                MapScreen()
+                MapScreen(
+                    onNavigateToAddPlacemarkScreen = { details, latitude, longitude ->
+                        navController.navigate(
+                            route = "add_placemark/${details.toRightArgumentFormat()}/$latitude/$longitude"
+                        )
+                    }
+                )
+            }
+
+            composable(route = "add_placemark/{details}/{latitude}/{longitude}", arguments = listOf(
+                navArgument(name = "details") { type = NavType.StringType },
+                navArgument(name = "latitude") { type = NavType.FloatType },
+                navArgument(name = "longitude") { type = NavType.FloatType }
+            )) {backStackEntry ->
+                val placemarkDetails = backStackEntry.arguments?.getString("details")?.toPlacemarkAddressFormat()
+                val latitude = backStackEntry.arguments?.getFloat("latitude")
+                val longitude = backStackEntry.arguments?.getFloat("longitude")
+                AddPlacemarkScreen(
+                    placeMarkDetails = placemarkDetails ?: "",
+                    latitude = latitude!!.toDouble(),
+                    longitude = longitude!!.toDouble(),
+                    onClick = {}
+                )
             }
 
             composable(Screens.Calendar.route) {

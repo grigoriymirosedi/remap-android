@@ -15,4 +15,8 @@ class RecyclePointRepositoryImpl @Inject constructor(private val remapRecycleAPI
     override suspend fun getEvents(): Response<List<CalendarEventDTO>> {
         return remapRecycleAPI.getEvents()
     }
+
+    override suspend fun addRecyclePoint(categoryType: List<String>, recyclePointDTO: RecyclePointDTO): Response<RecyclePointDTO> {
+        return remapRecycleAPI.addRecyclePoint(categoryType = categoryType, recyclePointDTO = recyclePointDTO)
+    }
 }

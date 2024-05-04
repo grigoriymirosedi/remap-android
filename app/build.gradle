@@ -86,7 +86,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
 
     // Yandex MapsKit
-    implementation 'com.yandex.android:maps.mobile:4.4.0-lite'
+    implementation 'com.yandex.android:maps.mobile:4.4.0-full'
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

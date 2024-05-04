@@ -3,7 +3,7 @@ package com.example.remap.data.remote.dto
 import com.example.remap.domain.models.RecyclePoint
 
 data class RecyclePointDTO(
-    val id: String,
+    val id: String? = null,
     val name: String,
     val image: String?,
     val description: String,
@@ -15,7 +15,7 @@ data class RecyclePointDTO(
 )
 
 fun RecyclePointDTO.toRecyclePoint() = RecyclePoint(
-    id = id,
+    id = id ?: "",
     name = name,
     image = image,
     description = description,

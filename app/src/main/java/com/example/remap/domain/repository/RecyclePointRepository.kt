@@ -8,4 +8,6 @@ interface RecyclePointRepository {
     suspend fun getRecyclePoints(): Response<List<RecyclePointDTO>>
 
     suspend fun getEvents(): Response<List<CalendarEventDTO>>
+
+    suspend fun addRecyclePoint(categoryType: List<String>, recyclePointDTO: RecyclePointDTO): Response<RecyclePointDTO>
 }

@@ -18,11 +18,38 @@ class MapViewModel @Inject constructor(
     private val repository: RecyclePointRepository,
 ) : ViewModel() {
 
+    val categoryType = MutableStateFlow(mutableListOf<String>())
+
     private val _recyclePoints = MutableStateFlow(listOf<RecyclePoint>())
     val recyclePoints: StateFlow<List<RecyclePoint>> = _recyclePoints
 
     init {
         initRecyclePoint()
+    }
+
+    fun addRecyclePoint(
+        name: String,
+        image: String?,
+        description: String,
+        contacts: String,
+        latitude: Double,
+        longitude: Double,
+        address: String,
+        working_hours: String,
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val recyclePointRequest = RecyclePointDTO(
+                name = name,
+                image = "",
+                description = description,
+                contacts = contacts,
+                latitude = latitude,
+                longitude = longitude,
+                address = address,
+                working_hours = working_hours
+            )
+            repository.addRecyclePoint(categoryType = categoryType.value.toList(), recyclePointDTO = recyclePointRequest)
+        }
     }
 
     private fun initRecyclePoint() {
