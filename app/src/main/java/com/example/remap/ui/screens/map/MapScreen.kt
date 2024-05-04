@@ -36,6 +36,7 @@ import com.yandex.mapkit.search.SearchFactory
 import com.yandex.mapkit.search.SearchManagerType
 import com.yandex.mapkit.search.SearchOptions
 import com.yandex.mapkit.search.Session
+import com.yandex.mapkit.search.Session.SearchListener
 import com.yandex.mapkit.search.ToponymObjectMetadata
 import com.yandex.runtime.Error
 import com.yandex.runtime.image.ImageProvider
@@ -74,6 +75,8 @@ fun MapScreen(
     var showRecyclePointInfoBottomSheet by remember { mutableStateOf(false) }
 
     val placemarkDetailsBottomSheet = rememberModalBottomSheetState()
+
+    var tappedCoordinates by remember { mutableStateOf<Point?>(null) }
 
     var showPlaceMarkDetailsInfoBottomSheet by remember { mutableStateOf(false) }
 
@@ -128,7 +131,7 @@ fun MapScreen(
             val firstChild = response.collection.children.firstOrNull()?.obj
             val metadata =
                 firstChild?.metadataContainer?.getItem(ToponymObjectMetadata::class.java)?.address
-            val coordinates = firstChild?.geometry?.firstOrNull()?.point!!
+            val coordinates = tappedCoordinates!!
             val streetName =
                 metadata?.components?.find { it.kinds.contains(Address.Component.Kind.STREET) }?.name
             val houseName =
@@ -160,6 +163,7 @@ fun MapScreen(
 
         override fun onMapLongTap(map: Map, point: Point) {
             tappedPlaceMark = mapViewState.map.mapObjects.addPlacemark(point, imageProvider)
+            tappedCoordinates = point
             searchManager.submit(point, 16, SearchOptions(), searchListener)
         }
     }

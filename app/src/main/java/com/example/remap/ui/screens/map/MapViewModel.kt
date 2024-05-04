@@ -40,7 +40,7 @@ class MapViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val recyclePointRequest = RecyclePointDTO(
                 name = name,
-                image = image,
+                image = "",
                 description = description,
                 contacts = contacts,
                 latitude = latitude,
