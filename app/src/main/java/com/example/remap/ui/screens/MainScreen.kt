@@ -73,7 +73,7 @@ fun MainScreen() {
                     placeMarkDetails = placemarkDetails ?: "",
                     latitude = latitude!!.toDouble(),
                     longitude = longitude!!.toDouble(),
-                    onClick = {}
+                    onComplete = navController::popBackStack
                 )
             }
 
