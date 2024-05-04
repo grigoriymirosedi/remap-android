@@ -1,5 +1,6 @@
 package com.example.remap.ui.screens.map
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -31,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,8 +50,10 @@ fun AddPlacemarkScreen(
     placeMarkDetails: String,
     latitude: Double,
     longitude: Double,
-    onClick: () -> Unit,
+    onComplete: () -> Unit,
 ) {
+
+    val context = LocalContext.current
 
     var placemarkName by rememberSaveable { mutableStateOf("") }
     var placemarkDescription by rememberSaveable { mutableStateOf("") }
@@ -159,17 +163,19 @@ fun AddPlacemarkScreen(
 
         Button(
             onClick = {
-            viewModel.addRecyclePoint(
-                name = placemarkName,
-                image = null,
-                description = placemarkDescription,
-                contacts = placemarkContacts,
-                latitude = latitude,
-                longitude = longitude,
-                address = placemarkAddress,
-                working_hours = placemarkWorkingHours
-            )
-        }) {
+                viewModel.addRecyclePoint(
+                    name = placemarkName,
+                    image = null,
+                    description = placemarkDescription,
+                    contacts = placemarkContacts,
+                    latitude = latitude,
+                    longitude = longitude,
+                    address = placemarkAddress,
+                    working_hours = placemarkWorkingHours
+                )
+                onComplete()
+                Toast.makeText(context, "Заявка отправлена на модерацию!", Toast.LENGTH_LONG).show()
+            }) {
             TextWithIcon(text = "Добавить", icon = Icons.Filled.Add, contentColor = Color.White)
         }
 
