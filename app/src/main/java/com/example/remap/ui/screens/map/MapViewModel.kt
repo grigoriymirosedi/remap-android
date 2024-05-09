@@ -1,5 +1,6 @@
 package com.example.remap.ui.screens.calendar
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.remap.data.remote.dto.RecyclePointDTO
@@ -20,35 +21,20 @@ class MapViewModel @Inject constructor(
 
     val categoryType = MutableStateFlow(mutableListOf<String>())
 
-    private val _recyclePoints = MutableStateFlow(listOf<RecyclePoint>())
-    val recyclePoints: StateFlow<List<RecyclePoint>> = _recyclePoints
+    private val _recyclePoints = mutableStateListOf<RecyclePoint>()
+    val recyclePoints: List<RecyclePoint> = _recyclePoints
 
     init {
         initRecyclePoint()
     }
 
     fun addRecyclePoint(
-        name: String,
-        image: String?,
-        description: String,
-        contacts: String,
-        latitude: Double,
-        longitude: Double,
-        address: String,
-        working_hours: String,
+        recyclePointDTO: RecyclePointDTO
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            val recyclePointRequest = RecyclePointDTO(
-                name = name,
-                image = "",
-                description = description,
-                contacts = contacts,
-                latitude = latitude,
-                longitude = longitude,
-                address = address,
-                working_hours = working_hours
-            )
-            repository.addRecyclePoint(categoryType = categoryType.value.toList(), recyclePointDTO = recyclePointRequest)
+            val response = repository.addRecyclePoint(categoryType = categoryType.value.toList(), recyclePointDTO = recyclePointDTO)
+            val responseBody = response.body()!!.toRecyclePoint()
+            _recyclePoints.add(responseBody)
         }
     }
 
@@ -58,9 +44,9 @@ class MapViewModel @Inject constructor(
                 repository.getRecyclePoints()
             }.onSuccess {
                 val handleResponse = it.body()?.map { it.toRecyclePoint() } ?: emptyList()
-                _recyclePoints.emit(value = handleResponse)
+                _recyclePoints.addAll(handleResponse)
             }.onFailure {
-                _recyclePoints.emit(value = emptyList())
+                _recyclePoints.addAll(emptyList())
             }
         }
     }
