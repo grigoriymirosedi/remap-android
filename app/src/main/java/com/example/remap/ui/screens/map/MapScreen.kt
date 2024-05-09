@@ -20,6 +20,7 @@ import com.example.remap.core.util.toStringLatLngFormat
 import com.example.remap.domain.models.PlacemarkDetails
 import com.example.remap.domain.models.RecyclePoint
 import com.example.remap.ui.screens.calendar.MapViewModel
+import com.example.remap.ui.screens.map.components.AddRecyclePontBottomSheet
 import com.example.remap.ui.screens.map.components.PlaceMarkDetailsBottomSheet
 import com.example.remap.ui.screens.map.components.RecyclePointInfoBottomSheet
 import com.yandex.mapkit.MapKitFactory
@@ -48,8 +49,7 @@ import rememberMapViewWithLifecycle
 fun MapScreen(
     modifier: Modifier = Modifier,
     viewModel: MapViewModel = hiltViewModel(),
-    onLoad: ((map: MapView) -> Unit)? = null,
-    onNavigateToAddPlacemarkScreen: (String, Double, Double) -> Unit,
+    onLoad: ((map: MapView) -> Unit)? = null
 ) {
 
     val context = LocalContext.current
@@ -62,7 +62,7 @@ fun MapScreen(
 
     val mapViewState = rememberMapViewWithLifecycle()
 
-    val recyclePoints = viewModel.recyclePoints.collectAsState()
+    val recyclePoints = viewModel.recyclePoints
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -80,11 +80,32 @@ fun MapScreen(
 
     var showPlaceMarkDetailsInfoBottomSheet by remember { mutableStateOf(false) }
 
+    var showAddRecyclePointBottomSheet by remember { mutableStateOf(false) }
+
+    val addRecyclePointBottomSheet = rememberModalBottomSheetState()
+
     val recyclePointCollection = mapViewState.mapWindow.map.mapObjects.addCollection()
 
     val bitmap = context.getBitmapFromVectorDrawable(R.drawable.ic_map_pin)
 
     val imageProvider = ImageProvider.fromBitmap(bitmap)
+
+    if (showAddRecyclePointBottomSheet) {
+        AddRecyclePontBottomSheet(
+            bottomSheetState = addRecyclePointBottomSheet,
+            placeMarkDetails = placeMarkDetails!!.details,
+            latitude = placeMarkDetails!!.coordinates.latitude,
+            longitude = placeMarkDetails!!.coordinates.longitude,
+            onAddCategoryTag = { viewModel.categoryType.value.add(it) },
+            onRemoveCategoryTag = { viewModel.categoryType.value.remove(it) },
+            onAddRecyclePoint = { viewModel.addRecyclePoint(it) },
+            onDismissRequest = {
+                mapViewState.map.mapObjects.remove(tappedPlaceMark!!)
+                showAddRecyclePointBottomSheet = false
+            },
+            onAddingCompleted = { showAddRecyclePointBottomSheet = false }
+        )
+    }
 
     if (showRecyclePointInfoBottomSheet) {
         RecyclePointInfoBottomSheet(
@@ -103,11 +124,7 @@ fun MapScreen(
                 coroutineScope.launch {
                     showPlaceMarkDetailsInfoBottomSheet = false
                     placemarkDetailsBottomSheet.hide()
-                    onNavigateToAddPlacemarkScreen(
-                        placeMarkDetails!!.details,
-                        placeMarkDetails!!.coordinates.latitude,
-                        placeMarkDetails!!.coordinates.longitude
-                    )
+                    showAddRecyclePointBottomSheet = true
                 }
             },
             onDismissRequest = {
@@ -125,7 +142,7 @@ fun MapScreen(
         true
     }
 
-    val searchListener = object : Session.SearchListener {
+    val searchListener = object : SearchListener {
         override fun onSearchResponse(response: Response) {
 
             val firstChild = response.collection.children.firstOrNull()?.obj
@@ -183,7 +200,7 @@ fun MapScreen(
 
             onLoad?.invoke(mapView)
 
-            recyclePoints.value.forEach {
+            recyclePoints.forEach {
                 recyclePointCollection.addPlacemark().apply {
                     geometry = Point(it.latitude, it.longitude)
                     userData = it
