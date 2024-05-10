@@ -14,7 +14,8 @@ object MockData {
         latitude = 47.216686,
         longitude = 39.628649,
         address = "ул. Мильчакова 8а",
-        working_hours = "Круглосуточно"
+        working_hours = "Круглосуточно",
+        categories = listOf("1","2","3")
     )
 
     val mockPlacemarkDetails = PlacemarkDetails(

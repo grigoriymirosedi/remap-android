@@ -10,7 +10,7 @@ import retrofit2.http.Query
 
 interface RemapRecycleAPI {
     @GET("v1/recycle-points")
-    suspend fun getRecyclePoints(): Response<List<RecyclePointDTO>>
+    suspend fun getRecyclePoints(@Query("categoryType") categoryType: List<String>?): Response<List<RecyclePointDTO>>
 
     @GET("v1/events")
     suspend fun getEvents(): Response<List<CalendarEventDTO>>

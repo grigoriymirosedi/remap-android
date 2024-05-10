@@ -12,6 +12,7 @@ data class RecyclePoint(
     val longitude: Double,
     val address: String,
     val working_hours: String,
+    val categories: List<String>
 )
 
 fun RecyclePoint.toRecyclePointDTO() = RecyclePointDTO(
@@ -23,5 +24,6 @@ fun RecyclePoint.toRecyclePointDTO() = RecyclePointDTO(
     latitude = latitude,
     longitude = longitude,
     address = address,
-    working_hours = working_hours
+    working_hours = working_hours,
+    categories = categories
 )

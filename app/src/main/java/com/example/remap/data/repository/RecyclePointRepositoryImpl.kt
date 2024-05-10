@@ -8,8 +8,8 @@ import retrofit2.Response
 import javax.inject.Inject
 
 class RecyclePointRepositoryImpl @Inject constructor(private val remapRecycleAPI: RemapRecycleAPI): RecyclePointRepository {
-    override suspend fun getRecyclePoints(): Response<List<RecyclePointDTO>> {
-        return remapRecycleAPI.getRecyclePoints()
+    override suspend fun getRecyclePoints(categoryType: List<String>?): Response<List<RecyclePointDTO>> {
+        return remapRecycleAPI.getRecyclePoints(categoryType = categoryType)
     }
 
     override suspend fun getEvents(): Response<List<CalendarEventDTO>> {
