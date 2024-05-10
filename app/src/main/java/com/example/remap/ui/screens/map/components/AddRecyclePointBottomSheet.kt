@@ -183,7 +183,8 @@ fun AddRecyclePontBottomSheet(
                         latitude = latitude,
                         longitude = longitude,
                         address = placemarkAddress,
-                        working_hours = placemarkWorkingHours
+                        working_hours = placemarkWorkingHours,
+                        categories = null
                     )
                     onAddRecyclePoint(recyclePoint)
                     onAddingCompleted()

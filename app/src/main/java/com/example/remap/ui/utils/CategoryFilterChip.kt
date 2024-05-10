@@ -3,6 +3,7 @@ package com.example.remap.ui.utils
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SelectableChipColors
 import androidx.compose.material3.Text
@@ -21,6 +22,7 @@ fun CategoryFilterChip(
     categoryType: CategoryType,
     modifier: Modifier = Modifier,
     onClick: (CategoryType) -> Unit,
+    colors: SelectableChipColors = FilterChipDefaults.filterChipColors(),
     onDissmiss: (CategoryType) -> Unit,
     iconColor: Color = Color.White,
 ) {
@@ -28,6 +30,7 @@ fun CategoryFilterChip(
     var isSelected by remember { mutableStateOf(false) }
 
     FilterChip(
+        modifier = modifier,
         selected = isSelected,
         onClick = {
             isSelected = !isSelected
@@ -43,5 +46,6 @@ fun CategoryFilterChip(
                 contentDescription = null,
             )
         },
+        colors = colors
     )
 }
