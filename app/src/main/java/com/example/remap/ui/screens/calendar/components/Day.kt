@@ -34,15 +34,15 @@ fun Day(day: CalendarDay, eventNum: Int = 0, onClick: (CalendarDay) -> Unit) {
             contentAlignment = Alignment.Center
         ) {
             if (eventNum == 1) {
-                Dot()
+                Dot(color = Color(0xff398fac))
             }
             else if (eventNum == 2) {
                 Row(
                     modifier = Modifier.fillMaxWidth(0.3f),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    Dot()
-                    Dot()
+                    Dot(color = Color(0xff398fac))
+                    Dot(color = Color(0xff794dff))
                 }
             }
             else if (eventNum == 3) {
@@ -50,9 +50,9 @@ fun Day(day: CalendarDay, eventNum: Int = 0, onClick: (CalendarDay) -> Unit) {
                     modifier = Modifier.fillMaxWidth(0.4f),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    Dot()
-                    Dot()
-                    Dot()
+                    Dot(color = Color(0xff398fac))
+                    Dot(color = Color(0xff794dff))
+                    Dot(color = Color(0xffff4d4d))
                 }
             }
         }
@@ -61,10 +61,10 @@ fun Day(day: CalendarDay, eventNum: Int = 0, onClick: (CalendarDay) -> Unit) {
 }
 
 @Composable
-fun Dot() {
+fun Dot(color: Color) {
     androidx.compose.foundation.Canvas(
         modifier = Modifier.size(4.dp)
     ) {
-        drawCircle(color = Color(0xff5dBB63))
+        drawCircle(color = color)
     }
 }

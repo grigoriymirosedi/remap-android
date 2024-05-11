@@ -55,7 +55,6 @@ fun CalendarScreen(
         dayContent = { day: CalendarDay -> Day(day, eventNum = calendarEventList[day.date]?.size ?: 0) {
             eventContentValue = calendarEventList[day.date] ?: emptyList()
             showBottomSheet = true
-            Log.d("1234", day.date.toString())
         } },
         monthHeader = { month ->
             val daysOfWeek = month.weekDays.first().map { it.date.dayOfWeek }
