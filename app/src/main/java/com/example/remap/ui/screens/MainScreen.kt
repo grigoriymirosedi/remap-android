@@ -13,6 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.remap.ui.screens.calendar.CalendarScreen
+import com.example.remap.ui.screens.feed.FeedScreen
 import com.example.remap.ui.screens.map.MapScreen
 import com.example.remap.ui.utils.BottomNavigationBar
 import com.example.remap.ui.utils.Screens
@@ -53,8 +54,7 @@ fun MainScreen() {
             }
 
             composable(Screens.Feed.route) {
-                //Replace with specific screen
-                SampleScreen( "Лента новостей")
+                FeedScreen()
             }
         }
     }
