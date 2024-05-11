@@ -58,7 +58,7 @@ fun MapScreen(
                             viewModel.filterCategories.add(category.sourceName)
                             viewModel.updateRecyclePoints()
                         },
-                        onDissmiss = {
+                        onDismiss = {
                             viewModel.filterCategories.remove(category.sourceName)
                             viewModel.updateRecyclePoints()
                         },

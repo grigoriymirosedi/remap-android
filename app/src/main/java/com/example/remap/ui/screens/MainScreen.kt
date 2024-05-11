@@ -14,6 +14,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.remap.ui.screens.calendar.CalendarScreen
 import com.example.remap.ui.screens.feed.FeedScreen
+import com.example.remap.ui.screens.home.HomeScreen
 import com.example.remap.ui.screens.map.MapScreen
 import com.example.remap.ui.utils.BottomNavigationBar
 import com.example.remap.ui.utils.Screens
@@ -43,7 +44,7 @@ fun MainScreen() {
         ) {
             composable(Screens.Home.route) {
                 //Replace with specific screen
-                SampleScreen( "Главный экран")
+                HomeScreen()
             }
 
             composable(Screens.Map.route) {
