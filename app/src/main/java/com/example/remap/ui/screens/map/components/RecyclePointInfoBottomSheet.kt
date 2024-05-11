@@ -2,8 +2,11 @@ package com.example.remap.ui.screens.map.components
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,6 +20,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -31,12 +35,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.remap.core.util.toCategoryType
 import com.example.remap.domain.models.RecyclePoint
 import com.example.remap.ui.utils.MockData
 import com.example.remap.ui.utils.TextWithIcon
 import com.example.remap.ui.utils.TitleText
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun RecyclePointInfoBottomSheet(
     modifier: Modifier = Modifier.fillMaxWidth(),
@@ -96,6 +101,11 @@ fun RecyclePointInfoBottomSheet(
                 contentColor = Color.Gray,
                 fontSize = 16.sp,
             )
+            FlowRow(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(5.dp)) {
+                recyclePoint.categories.forEach {
+                    SuggestionChip(onClick = { /*TODO*/ }, label = { Text(text = it.toCategoryType(), fontSize = 14.sp) })
+                }
+            }
             Spacer(modifier = Modifier.size(4.dp))
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.BottomEnd) {
                 Button(

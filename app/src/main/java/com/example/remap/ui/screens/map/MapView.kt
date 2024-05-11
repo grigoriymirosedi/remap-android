@@ -172,7 +172,7 @@ fun MapView(
 
     val inputListener = object : InputListener {
         override fun onMapTap(map: Map, point: Point) {
-            Toast.makeText(context, "Single tap clicked", Toast.LENGTH_SHORT).show()
+            return
         }
 
         override fun onMapLongTap(map: Map, point: Point) {

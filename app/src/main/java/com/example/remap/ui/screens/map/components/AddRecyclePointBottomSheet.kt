@@ -167,7 +167,7 @@ fun AddRecyclePontBottomSheet(
                     CategoryFilterChip(
                         categoryType = category,
                         onClick = { onAddCategoryTag(category.sourceName) },
-                        onDissmiss = { onRemoveCategoryTag(category.sourceName) }
+                        onDismiss = { onRemoveCategoryTag(category.sourceName) }
                     )
                 }
             }

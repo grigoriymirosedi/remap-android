@@ -6,7 +6,9 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import androidx.core.content.ContextCompat
+import com.example.remap.ui.screens.map.components.CategoryType
 import com.yandex.mapkit.geometry.Point
+import java.util.Locale.Category
 
 fun Context.getBitmapFromVectorDrawable(drawableId: Int): Bitmap? {
     val drawable = ContextCompat.getDrawable(this, drawableId) ?: return null
@@ -38,6 +40,24 @@ fun String.toCoordinateFormat(): String {
 
 fun String.toRightArgumentFormat(): String {
     return this.replace("/", "@")
+}
+
+fun String.toCategoryType(): String {
+    return when(this) {
+        "0" -> CategoryType.PAPER.text
+        "1" -> CategoryType.PLASTIC.text
+        "2" -> CategoryType.GLASS.text
+        "3" -> CategoryType.METAL.text
+        "4" -> CategoryType.TETRA_PACK.text
+        "5" -> CategoryType.CLOTHES.text
+        "6" -> CategoryType.LAMPS.text
+        "7" -> CategoryType.CAPS.text
+        "8" -> CategoryType.TECH.text
+        "9" -> CategoryType.BATTERIES.text
+        "10" -> CategoryType.TIRES.text
+        "11" -> CategoryType.DANGEROUS.text
+        else -> CategoryType.OTHER.text
+    }
 }
 
 fun String.toPlacemarkAddressFormat(): String {

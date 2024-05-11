@@ -15,7 +15,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.example.remap.ui.screens.map.components.CategoryType
-import java.util.Locale.Category
 
 @Composable
 fun CategoryFilterChip(
@@ -23,7 +22,7 @@ fun CategoryFilterChip(
     modifier: Modifier = Modifier,
     onClick: (CategoryType) -> Unit,
     colors: SelectableChipColors = FilterChipDefaults.filterChipColors(),
-    onDissmiss: (CategoryType) -> Unit,
+    onDismiss: (CategoryType) -> Unit,
     iconColor: Color = Color.White,
 ) {
 
@@ -37,7 +36,7 @@ fun CategoryFilterChip(
             if (isSelected) {
                 onClick(categoryType)
             } else
-                onDissmiss(categoryType)
+                onDismiss(categoryType)
         },
         label = { Text(text = categoryType.text) },
         leadingIcon = {
