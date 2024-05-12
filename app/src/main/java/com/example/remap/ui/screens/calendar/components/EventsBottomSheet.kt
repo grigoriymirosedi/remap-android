@@ -74,7 +74,7 @@ fun EventBottomSheetContent(
 //            contentScale = ContentScale.Crop,
 //            contentDescription = null)
         Column(
-            modifier = Modifier.align(Alignment.End).padding(end = 16.dp, top = 8.dp, bottom = 8.dp),
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
             horizontalAlignment = Alignment.Start
         ) {
             TextWithIcon(
