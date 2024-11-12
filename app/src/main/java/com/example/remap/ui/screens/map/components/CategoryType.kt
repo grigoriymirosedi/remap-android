@@ -2,7 +2,6 @@ package com.example.remap.ui.screens.map.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CleanHands
-import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.CopyAll
 import androidx.compose.material.icons.filled.Hardware
 import androidx.compose.material.icons.outlined.Battery3Bar
@@ -12,11 +11,9 @@ import androidx.compose.material.icons.outlined.Dangerous
 import androidx.compose.material.icons.outlined.DirectionsCar
 import androidx.compose.material.icons.outlined.Inventory2
 import androidx.compose.material.icons.outlined.Lightbulb
-import androidx.compose.material.icons.outlined.LocalCarWash
 import androidx.compose.material.icons.outlined.QuestionMark
 import androidx.compose.material.icons.outlined.Science
 import androidx.compose.material.icons.outlined.TireRepair
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 
 enum class CategoryType(val type: Int, val sourceImage: ImageVector, val sourceName: String, val text: String) {
