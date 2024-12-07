@@ -15,3 +15,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "ReMap"
 include(":app")
+include(":features:home")
+include(":features:map")
+include(":core")
+include(":data")
