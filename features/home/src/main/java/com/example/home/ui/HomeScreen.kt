@@ -1,174 +1,213 @@
 package com.example.home.ui
 
-import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Lightbulb
-import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.SuggestionChip
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.core.models.RecyclePoint
-import com.example.core.mock.MockData
-import com.example.core.models.CategoryType
-import com.example.core.ui.TextWithIcon
+import com.example.core.ui.CollectedRecyclableItemCard
+import com.example.core.ui.EventCard
+import com.example.core.ui.MascotInfoCard
+import com.example.core.ui.PointsCard
+import com.example.core.ui.RecyclePointsNearbyCard
 import com.example.core.ui.TitleText
-import com.example.core.util.toCategoryType
-
+import com.example.core.uikit.RemapAppTheme
+import com.example.core.uikit.RemapTheme
+import com.example.home.models.CollectedItem
+import com.example.home.models.HomeUiState
+import com.example.home.models.ProfileInfo
+import com.example.home.models.RecycleEvent
+import com.example.home.models.RecyclePoint
+import com.example.home.models.State
+import com.example.ui.ProgressBar
 
 @Composable
-fun HomeScreen(
+internal fun HomeScreen(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = hiltViewModel(),
+    uiState: State,
+    navigateToMap: (Double, Double) -> Unit,
+    onEvent: (HomeUiEvent) -> Unit
 ) {
 
-    val recyclePoints = viewModel.recyclePoints.collectAsState()
-    val isLoading by remember { viewModel.isLoading }
+    when(uiState) {
+        is State.Loading -> ProgressBar(modifier = modifier.fillMaxSize())
+        is State.Error -> ErrorMessage(uiState.message)
+        is State.Success -> {
+            HomeScreenContent(
+                modifier = modifier,
+                state = uiState.data,
+                navigateToMap = navigateToMap,
+                onEvent = onEvent
+            )
+        }
+    }
+}
 
-    Column(
+@Composable
+private fun HomeScreenContent(
+    modifier: Modifier = Modifier,
+    state: HomeUiState,
+    navigateToMap: (Double, Double) -> Unit,
+    onEvent: (HomeUiEvent) -> Unit
+) {
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp, vertical = 12.dp)
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+            .background(RemapAppTheme.colorScheme.brandBackground)
+            .padding(start = 16.dp, end = 16.dp, top = 12.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        TitleText(text = "Привет!")
-
-        HorizontalDivider(thickness = 2.dp)
-
-//        TitleText(text = "Категории", fontSize = 20.sp)
-//
-//        Row(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .horizontalScroll(rememberScrollState()),
-//            horizontalArrangement = Arrangement.spacedBy(10.dp)
-//        ) {
-//            CategoryType.values().forEach {
-//                FilterCard(modifier = Modifier.size(130.dp), filterType = it)
-//            }
-//        }
-
-        TitleText(text = "Совет дня", fontSize = 20.sp)
-
-        Card() {
+        item {
             Row(
-                modifier = Modifier.padding(8.dp, 12.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(3.dp)
-            ) {
-                Icon(
-                    modifier = Modifier.size(60.dp),
-                    imageVector = Icons.Filled.Lightbulb,
-                    tint = Color(0xffffdf00),
-                    contentDescription = null
-                )
-                Text(
-                    modifier = Modifier.padding(end = 8.dp),
-                    text = "Важно осознанно относиться к покупкам, иначе мы будем тушить огонь, в который сами же подливаем масло. Покупайте только то, что действительно нужно. Это избавляет от визуального мусора и хлама в доме, помогает сэкономить семейный бюджет и лучше узнать себя",
-                    fontSize = 16.sp
-                )
-            }
-        }
-
-        TitleText(text = "Точки переработки", fontSize = 20.sp)
-
-        if (isLoading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(70.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        } else {
-            recyclePoints.value.forEach {
-                RecyclePointCard(modifier = Modifier.fillMaxWidth(), recyclePoint = it)
-            }
-        }
-    }
-}
-
-@Composable
-fun FilterCard(modifier: Modifier = Modifier, filterType: CategoryType) {
-    Card(modifier = modifier) {
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 8.dp, vertical = 4.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-            Icon(modifier = Modifier.size(70.dp), imageVector = filterType.sourceImage, contentDescription = null)
-            Text(text = filterType.text, fontSize = 18.sp)
-        }
-    }
-}
-
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-fun RecyclePointCard(modifier: Modifier = Modifier, recyclePoint: RecyclePoint) {
-    Card(modifier = modifier) {
-        Column(
-            modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-            TitleText(text = recyclePoint.name)
-            Text(text = recyclePoint.description, fontSize = 16.sp)
-            TextWithIcon(
                 modifier = Modifier.fillMaxWidth(),
-                text = recyclePoint.address,
-                icon = Icons.Outlined.LocationOn,
-                contentColor = Color.Gray,
-                fontSize = 16.sp,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Top
+            ) {
+                TitleText(
+                    text = "Привет, ${state.profileInfo.username}"
+                )
+                PointsCard(
+                    pointsAmount = state.profileInfo.points.toString(),
+                )
+            }
+        }
+
+        item {
+            MascotInfoCard(
+                infoText = state.profileInfo.tip
             )
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
-                recyclePoint.categories.forEach {
-                    SuggestionChip(onClick = { /*TODO*/ }, label = { Text(text = it.toCategoryType(), fontSize = 14.sp) })
+        }
+
+        item {
+            TitleText(
+                text = "Сколько ты собрал",
+                style = RemapAppTheme.typography.subheading1
+            )
+        }
+
+        item {
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                items(state.profileInfo.collectedItems) { collectedItem ->
+                    CollectedRecyclableItemCard(
+                        image = collectedItem.image,
+                        imageColor = collectedItem.imageColor,
+                        headerText = collectedItem.headerText,
+                        recycledCountText = collectedItem.quantity.toString()
+                    )
+                }
+            }
+        }
+
+        item {
+            TitleText(
+                text = "Точки перереработки рядом",
+                style = RemapAppTheme.typography.subheading1
+            )
+        }
+
+        item {
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            )
+            {
+                items(state.recyclePointsNearby) { recyclePoint ->
+                    RecyclePointsNearbyCard(
+                        title = recyclePoint.name,
+                        address = recyclePoint.address,
+                        distance = recyclePoint.distance,
+                        latitude = recyclePoint.latitude,
+                        longitude = recyclePoint.longitude,
+                        onClick = { navigateToMap(recyclePoint.latitude, recyclePoint.longitude) }
+                    )
+                }
+            }
+         }
+
+        item {
+            TitleText(
+                text = "Ближайшие мероприятия",
+                style = RemapAppTheme.typography.subheading1
+            )
+        }
+
+        item {
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(state.upcomingEvents) {upcomingEvent ->
+                    EventCard(
+                        imageURL = upcomingEvent.imageUrl,
+                        title = upcomingEvent.title,
+                        date = upcomingEvent.date,
+                        time = upcomingEvent.time,
+                        location = upcomingEvent.location,
+                        onClick = { onEvent(HomeUiEvent.toggleUpcomingEventDetails(upcomingEvent))}
+                    )
                 }
             }
         }
     }
 }
 
-@Preview(showBackground = true)
+
+
 @Composable
-fun RecyclePointCardPreview(recyclePoint: RecyclePoint = MockData.mockRecyclePointData) {
-    RecyclePointCard(recyclePoint = recyclePoint)
+fun ErrorMessage(errorMessage: String) {
+    Text(errorMessage)
 }
 
 @Preview(showBackground = true)
 @Composable
-fun FilterCardPreview(filterType: CategoryType = CategoryType.CLOTHES) {
-    FilterCard(filterType = filterType)
-}
+private fun HomeScreenContentPreview() {
 
-@Preview(showBackground = true)
-@Composable
-fun HomeScreenPreview() {
-    HomeScreen()
+    val profileInfo = ProfileInfo(
+        username = "Григорий",
+        points = 350,
+        tip = "Привет, я - Зелёная Клякса - твой экологический помощник в правильной переработке вторсырья"
+    )
+
+    val collectedItems: List<CollectedItem> = listOf(
+        CollectedItem.Battery(quantity = 13),
+        CollectedItem.Plastic(quantity = 11),
+        CollectedItem.Paper(quantity = 6)
+    )
+
+    val recyclePoints = listOf(
+        RecyclePoint(id = "", name = "Мехматовская мусорка", address = "ул. Мильчакова 8а", latitude = 47.216686, longitude = 39.628649, acceptedItems = emptyList(), workingHours =  "Круглосуточно", phoneNumber = "79999999", imageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPUbgWmbBYmUvYCgmvTjToqEQuLCAH8k5rIA&s"),
+        RecyclePoint(id = "", name = "Мехматовская мусорка", address = "ул. Мильчакова 8а", latitude = 47.216686, longitude = 39.628649, acceptedItems = emptyList(), workingHours =  "Круглосуточно", phoneNumber = "79999999", imageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPUbgWmbBYmUvYCgmvTjToqEQuLCAH8k5rIA&s")
+    )
+
+    val upcomingEvents = listOf(
+        RecycleEvent(id = "", title = "Субботник в ботаническом саду", date = "20 августа", time = "12:00", description = "Проведение первого мероприятия Ремапа", location = "переулок Ботанический Спуск, 7", imageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq42Q5fT68X6BzxLKttK9M7exYW6bEi1BX6Q&s"),
+        RecycleEvent(id = "", title = "Субботник в ботаническом саду", date = "20 августа", time = "12:00", description = "Проведение первого мероприятия Ремапа", location = "переулок Ботанический Спуск, 7", imageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq42Q5fT68X6BzxLKttK9M7exYW6bEi1BX6Q&s")
+    )
+
+    val mockUiState = HomeUiState(
+        profileInfo = profileInfo,
+        collectedItems = collectedItems,
+        recyclePointsNearby = recyclePoints,
+        upcomingEvents = upcomingEvents,
+    )
+
+    RemapTheme {
+        HomeScreenContent(
+            state = mockUiState,
+            navigateToMap = { latitude, longitude -> },
+            onEvent = {}
+        )
+    }
 }

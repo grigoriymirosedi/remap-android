@@ -5,7 +5,9 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kapt)
+    alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.hiltAndroid)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -23,8 +25,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-        buildConfigField("String", "MAPKIT_API_KEY", gradleLocalProperties(rootDir).getProperty("MAPKIT_API_KEY"))
-        buildConfigField("String", "GEOCODER_API_KEY", gradleLocalProperties(rootDir).getProperty("GEOCODER_API_KEY"))
+        buildConfigField("String", "MAPKIT_API_KEY", gradleLocalProperties(rootDir, providers).getProperty("MAPKIT_API_KEY"))
+        buildConfigField("String", "GEOCODER_API_KEY", gradleLocalProperties(rootDir, providers).getProperty("GEOCODER_API_KEY"))
     }
 
     buildTypes {
@@ -37,18 +39,18 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
+    }
+    kapt {
+        correctErrorTypes = true
     }
     buildFeatures {
         buildConfig = true
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
     }
     packaging {
         resources {
@@ -65,9 +67,6 @@ dependencies {
     implementation(libs.io.coil)
     implementation(libs.androidx.core.splashscreen)
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.koin.android)
-    implementation(libs.koin.androidx.compose)
-    implementation(libs.koin.androidx.navigation)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
@@ -77,22 +76,41 @@ dependencies {
     implementation(libs.material.icons.extended)
     implementation(libs.yandex.mapkit)
     implementation(libs.androidx.material.android)
-    implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.compose)
     implementation(libs.retrofit)
-    implementation(libs.retrofit.gson.converter)
-    implementation(libs.gson)
     implementation(libs.okhttp.interceptor)
     implementation(libs.custom.calendar)
     implementation(libs.compose.webview)
     implementation(libs.accompanist)
     implementation(libs.javapoet)
+    implementation(libs.javax.inject)
+    implementation(libs.retrofit)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.retrofit.adapters.result)
+    implementation(libs.security.crypto)
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+    implementation(libs.androidx.security.crypto.ktx)
+
+
     kapt(libs.hilt.compiler)
 
-    implementation(project(":core"))
-    implementation(project(":data"))
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+
     implementation(project(":features:home"))
     implementation(project(":features:map"))
+    implementation(project(":features:events"))
+    implementation(project(":features:profile"))
+    implementation(project(":features:auth"))
+
+    implementation(project(":data:recyclepoint"))
+    implementation(project(":data:profile"))
+    implementation(project(":data:events"))
+    implementation(project(":data:community"))
+    implementation(project(":data:auth"))
+
+    implementation(project(":core:ui"))
+    implementation(project(":core:data"))
 
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)

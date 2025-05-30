@@ -1,6 +1,6 @@
 [versions]
-agp = "8.2.2"
-kotlin = "1.9.0"
+agp = "8.3.2"
+kotlin = "2.0.0"
 core-ktx = "1.13.1"
 junit = "4.13.2"
 androidx-test-ext-junit = "1.1.5"
@@ -8,27 +8,29 @@ espresso-core = "3.5.1"
 lifecycle-runtime-ktx = "2.7.0"
 activity-compose = "1.9.0"
 compose-bom = "2024.06.00"
-navigation-compose = "2.7.7"
+navigation-compose = "2.8.2"
 io-coil = "2.6.0"
-material3-android = "1.2.1"
+material3-android = "1.3.1"
 core-splashscreen = "1.0.1"
-io-koin = "3.5.6"
 appcompat = "1.6.1"
 material = "1.11.0"
-org-jetbrains-kotlin-jvm = "1.9.0"
 yandex-mapkit = "4.8.1-full"
+kotlin-serialization-json = "1.7.1"
 hilt-android = "2.51.1"
 kapt-version = "1.8.10"
 retrofit2 = "2.4.0"
-gson = "2.11.0"
 okhttp-interceptor = "4.12.0"
-custom-calendar = "2.5.0"
+custom-calendar = "2.6.0"
+retrofitAdaptersResult = "1.0.9"
 hilt-navigation-compose = "1.2.0"
+hilt-viewmodel = "1.0.0"
 compose-webview = "0.33.6"
 accompanist = "0.34.0"
+kotlinx-coroutines = "1.5.2"
 javapoet = "1.13.0"
-androidx-material3-android = "1.3.1"
-ui-tooling = "1.7.5"
+javax-version = "1"
+security-crypto = "1.1.0-alpha02"
+securityCryptoKtx = "1.1.0-alpha06"
 
 [libraries]
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle-runtime-ktx" }
@@ -43,9 +45,6 @@ androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", versi
 androidx-navigation-compose = { group = "androidx.navigation", name="navigation-compose", version.ref = "navigation-compose"}
 io-coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "io-coil" }
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "core-splashscreen"}
-koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "io-koin"}
-koin-androidx-navigation = { group = "io.insert-koin", name = "koin-androidx-navigation", version.ref = "io-koin"}
-koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "io-koin"}
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
@@ -59,24 +58,31 @@ androidx-material-android = { group = "androidx.compose.material", name = "mater
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 yandex-mapkit = { group = "com.yandex.android", name = "maps.mobile", version.ref = "yandex-mapkit" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt-android" }
+hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt-android" }
 androidx-hilt-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt-android" }
+hilt-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hilt-viewmodel" }
+javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "javax-version"}
 material-icons-core = { group = "androidx.compose.material", name = "material-icons-core" }
 material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit2" }
-retrofit-gson-converter = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit2"}
-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "security-crypto" }
 okhttp-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp-interceptor"}
+retrofit-adapters-result = { module = "com.github.skydoves:retrofit-adapters-result", version.ref = "retrofitAdaptersResult" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlin-serialization-json" }
+
 custom-calendar = { group = "com.kizitonwose.calendar", name = "compose", version.ref = "custom-calendar" }
 compose-webview = { group = "io.github.kevinnzou", name = "compose-webview", version.ref = "compose-webview" }
+coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines"}
 accompanist = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
 javapoet =  { group = "com.squareup", name = "javapoet", version.ref = "javapoet"}
-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "ui-tooling" }
+androidx-security-crypto-ktx = { group = "androidx.security", name = "security-crypto-ktx", version.ref = "securityCryptoKtx" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kapt-version" }
 hiltAndroid = { id = "com.google.dagger.hilt.android", version.ref = "hilt-android"}
-org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
+org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

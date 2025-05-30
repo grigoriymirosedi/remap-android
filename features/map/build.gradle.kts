@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.hiltAndroid)
     alias(libs.plugins.kapt)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -29,15 +30,12 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }
 
@@ -46,10 +44,12 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.material.icons.core)
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.material.icons.extended)
+    implementation(libs.androidx.material3.android)
+    implementation(libs.io.coil)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.hilt.compose)
 
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -57,12 +57,14 @@ dependencies {
 
     implementation(libs.yandex.mapkit)
 
-    implementation(libs.hilt.android)
-    implementation(libs.androidx.material3.android)
+    implementation(libs.androidx.hilt.compose)
     kapt(libs.hilt.compiler)
 
-    implementation(project(":core"))
-    implementation(project(":data"))
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+
+    implementation(project(":data:recyclepoint"))
+    implementation(project(":core:ui"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
