@@ -3,7 +3,6 @@ package com.example.map.ui.models
 import com.example.models.RecyclePointDTO
 
 data class MapRecyclePointItem(
-    val id: String,
     val name: String,
     val description: String,
     val address: String,
@@ -14,11 +13,11 @@ data class MapRecyclePointItem(
     val workingHours: String,
     val phoneNumber: String?,
     val imageUrl: String?,
-    val moderationStatus: Int
+    val moderationStatus: Int,
+    val isDummy: Boolean
 )
 
 fun RecyclePointDTO.toMapRecyclePointItem() = MapRecyclePointItem(
-    id= id,
     name = name,
     description = description,
     address = address,
@@ -29,7 +28,8 @@ fun RecyclePointDTO.toMapRecyclePointItem() = MapRecyclePointItem(
     workingHours = workingHours,
     phoneNumber = phoneNumber,
     imageUrl = imageUrl,
-    moderationStatus = moderationStatus
+    moderationStatus = moderationStatus,
+    isDummy = false
 )
 
 fun String.toStringCategory(): String {

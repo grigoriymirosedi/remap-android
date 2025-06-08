@@ -27,12 +27,17 @@ fun YandexMapView(
     azimuth: Float = DEFAULT_AZIMUTH,
     tilt: Float = DEFAULT_TILT,
     onRecyclePointClick: (MapRecyclePointItem) -> Unit,
+    onSearchResult: (String) -> Unit,
     onMapClick: () -> Unit,
-    onMapLongTap: () -> Unit,
+    onMapLongTap: (Double, Double) -> Unit,
 ) {
     val context = LocalContext.current
     val mapView = remember {
-        mutableStateOf<MapView?>(null)
+        mutableStateOf<RecyclePointMapView?>(null)
+    }
+
+    LaunchedEffect(recyclePoints) {
+        mapView.value?.updateRecyclePoints(recyclePoints)
     }
 
     AndroidView(
@@ -45,6 +50,7 @@ fun YandexMapView(
                 recyclePoints = recyclePoints,
                 onRecyclePointClick = onRecyclePointClick,
                 onMapClick = onMapClick,
+                onSearchResult = onSearchResult,
                 onMapLongTap = onMapLongTap
             ).also { mapView.value = it }
         }

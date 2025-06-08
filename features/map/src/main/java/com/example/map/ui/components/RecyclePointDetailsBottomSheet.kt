@@ -33,6 +33,7 @@ import com.example.core.uikit.RemapAppTheme
 import com.example.core.uikit.RemapTheme
 import com.example.ui.R
 import com.example.map.ui.models.MapRecyclePointItem
+import com.example.map.ui.models.toStringCategory
 import com.example.ui.RecycleAcceptedItemChip
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -72,9 +73,8 @@ fun RecyclePointDetailsBottomSheet(
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
-
                         recyclePointItem.acceptedItems.forEach { acceptedItem ->
-                            RecycleAcceptedItemChip(item = acceptedItem)
+                            RecycleAcceptedItemChip(item = acceptedItem.toStringCategory())
                         }
                     }
                     Text(text = recyclePointItem.name, style = recyclePointNameTextStyle)
@@ -100,7 +100,6 @@ fun RecyclePointDetailsBottomSheet(
 private fun RecyclePointDetailsBottomSheetPreview(
     modifier: Modifier = Modifier,
     recyclePointItem: MapRecyclePointItem = MapRecyclePointItem(
-        id = "1",
         name = "Мехматовская мусорка",
         address = "ул. Мильчакова 8а",
         latitude = 123123.0,
@@ -111,7 +110,8 @@ private fun RecyclePointDetailsBottomSheetPreview(
         imageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq42Q5fT68X6BzxLKttK9M7exYW6bEi1BX6Q&s",
         locationHint = "Мусорка находится за мехматом со стороны курилки",
         description = "Круглосуточная мусорка по приёму отходов",
-        moderationStatus = 0
+        moderationStatus = 0,
+        isDummy = false,
     )
 ) {
     RemapTheme {

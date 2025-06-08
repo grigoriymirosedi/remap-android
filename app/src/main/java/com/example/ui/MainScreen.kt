@@ -40,6 +40,4 @@ fun MainScreen(
             isAuthorized = isAuthorized != null
         )
     }
-
-
 }
