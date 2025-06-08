@@ -1,6 +1,7 @@
 package com.example.map.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -18,10 +19,14 @@ fun MapScreenRoute(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
+    LaunchedEffect(Unit) {
+        viewModel.handleEvent(MapEvent.LoadRecyclePoints)
+    }
     MapScreen(
         latitude = latitude,
         longitude = longitude,
         modifier = modifier,
+        onEvent = { viewModel.handleEvent(it) },
         uiState = uiState
     )
 }

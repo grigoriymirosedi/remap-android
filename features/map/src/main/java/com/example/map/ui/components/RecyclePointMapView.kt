@@ -8,15 +8,20 @@ import com.example.ui.R
 import com.example.util.DEFAULT_AZIMUTH
 import com.example.util.DEFAULT_TILT
 import com.example.util.DEFAULT_ZOOM
-import com.yandex.mapkit.Animation
-import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.InputListener
 import com.yandex.mapkit.map.Map
+import com.yandex.mapkit.map.MapObject
 import com.yandex.mapkit.map.MapObjectTapListener
 import com.yandex.mapkit.mapview.MapView
-import com.yandex.mapkit.user_location.UserLocationLayer
+import com.yandex.mapkit.search.Response
+import com.yandex.mapkit.search.SearchFactory
+import com.yandex.mapkit.search.SearchManagerType
+import com.yandex.mapkit.search.SearchOptions
+import com.yandex.mapkit.search.SearchType
+import com.yandex.mapkit.search.Session
+import com.yandex.runtime.Error
 import com.yandex.runtime.image.ImageProvider
 
 class RecyclePointMapView(
@@ -28,11 +33,21 @@ class RecyclePointMapView(
     val azimuth: Float = DEFAULT_AZIMUTH,
     val tilt: Float = DEFAULT_TILT,
     onRecyclePointClick: (MapRecyclePointItem) -> Unit,
-    onMapLongTap: () -> Unit,
-    onMapClick: () -> Unit
-): MapView(context) {
+    onMapLongTap: (Double, Double) -> Unit,
+    onMapClick: () -> Unit,
+    onSearchResult: (String) -> Unit,
+) : MapView(context) {
 
     private val drawableIcon = context.getBitmapFromVectorDrawable(R.drawable.ic_map_pin)
+
+    private var dummyRecyclePoint: MapObject? = null
+
+    private val searchManager = SearchFactory.getInstance().createSearchManager(SearchManagerType.ONLINE)
+
+    private val searchOptions = SearchOptions().apply {
+        resultPageSize = 1
+        searchTypes = SearchType.GEO.value
+    }
 
     private val mapObjectListener = MapObjectTapListener { mapObject, point ->
         val recyclePoint = mapObject.userData as MapRecyclePointItem
@@ -40,23 +55,53 @@ class RecyclePointMapView(
         true
     }
 
-    private val mapOnClickListener = object: InputListener {
+    private val searchListener = object: Session.SearchListener {
+        override fun onSearchResponse(p0: Response) {
+            val address = p0.collection.children.firstOrNull()?.obj?.geometry?.firstOrNull()?.point
+            val name = p0.collection.children.firstOrNull()?.obj?.name
+            onSearchResult(name ?: "")
+            Log.e("123", "address: $name")
+
+        }
+
+        override fun onSearchError(p0: Error) {
+            Log.e("yandex mapkit error", "OnSearchError invoked")
+        }
+    }
+
+    private val mapOnClickListener = object : InputListener {
         override fun onMapTap(p0: Map, p1: Point) {
             onMapClick()
         }
 
         override fun onMapLongTap(p0: Map, p1: Point) {
-            onMapLongTap()
+            onMapLongTap(p1.latitude, p1.longitude)
+            searchManager.submit(p1,  16, searchOptions, searchListener)
         }
     }
 
     init {
         mapWindow.map.apply {
-            move(CameraPosition(Point(latitude, longitude), zoom , azimuth, tilt))
+            move(CameraPosition(Point(latitude, longitude), zoom, azimuth, tilt))
         }
         mapWindow.map.mapObjects.addTapListener(mapObjectListener)
         mapWindow.map.addInputListener(mapOnClickListener)
         loadRecyclePoints()
+    }
+
+    fun updateRecyclePoints(newPoints: List<MapRecyclePointItem>) {
+        dummyRecyclePoint?.let { placemark ->
+            mapWindow.map.mapObjects.remove(placemark)
+            dummyRecyclePoint = null
+        }
+
+        val dummyPoint = newPoints.lastOrNull { it.isDummy }
+        if (dummyPoint != null) {
+            dummyRecyclePoint = mapWindow.map.mapObjects.addPlacemark().apply {
+                geometry = Point(dummyPoint.latitude, dummyPoint.longitude)
+                setIcon(ImageProvider.fromBitmap(drawableIcon))
+            }
+        }
     }
 
     private fun loadRecyclePoints() {

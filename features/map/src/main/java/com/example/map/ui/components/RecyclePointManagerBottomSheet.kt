@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.Contacts
 import androidx.compose.material.icons.outlined.Description
+import androidx.compose.material.icons.outlined.LocationCity
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.QuestionMark
 import androidx.compose.material.icons.outlined.Title
@@ -23,6 +24,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,6 +35,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.example.core.ui.DefaultFilledButton
 import com.example.core.ui.TitleText
 import com.example.core.uikit.RemapAppTheme
 import com.example.core.uikit.RemapTheme
@@ -43,15 +46,21 @@ fun RecyclePointManagerBottomSheet(
     modifier: Modifier = Modifier,
     scaffoldState: BottomSheetScaffoldState,
     isBottomSheetVisible: Boolean,
-    scaffoldPeekHeight: Dp = 350.dp,
+    initialRecyclePointAddress: String,
+    scaffoldPeekHeight: Dp = 200.dp,
     sheetShape: Shape = RemapAppTheme.shape.medium,
-    onAddRecyclePoint: (String, String, String, String, String) -> Unit
+    onAddRecyclePoint: (String, String, String, String, String) -> Unit,
 ) {
     var recyclePointTitle by remember { mutableStateOf("") }
     var recyclePointDescription by remember { mutableStateOf("") }
+    var recyclePointAddress by remember { mutableStateOf(initialRecyclePointAddress) }
     var recyclePointLocationHint by remember { mutableStateOf("") }
     var recyclePointWorkingHours by remember { mutableStateOf("") }
     var recyclePointContacts by remember { mutableStateOf("") }
+
+    LaunchedEffect(initialRecyclePointAddress) {
+        recyclePointAddress = initialRecyclePointAddress
+    }
 
     if (isBottomSheetVisible) {
         BottomSheetScaffold(
@@ -67,7 +76,7 @@ fun RecyclePointManagerBottomSheet(
                     ),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    TitleText("Новая точка переработки")
+                    TitleText(text = "Новая точка переработки")
                     Spacer(modifier = Modifier.size(8.dp))
                     OutlinedTextField(
                         value = recyclePointTitle,
@@ -94,6 +103,21 @@ fun RecyclePointManagerBottomSheet(
                         trailingIcon = {
                             Icon(
                                 imageVector = Icons.Outlined.Description,
+                                contentDescription = null
+                            )
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    OutlinedTextField(
+                        value = recyclePointAddress,
+                        onValueChange = {
+                            recyclePointAddress = it
+                        },
+                        label = { Text(text = "Адрес") },
+                        singleLine = true,
+                        trailingIcon = {
+                            Icon(
+                                imageVector = Icons.Outlined.LocationCity,
                                 contentDescription = null
                             )
                         },
@@ -144,7 +168,8 @@ fun RecyclePointManagerBottomSheet(
                         },
                         modifier = Modifier.fillMaxWidth()
                     )
-                    Button(
+                    DefaultFilledButton(
+                        text = "Добавить",
                         onClick = {
                             onAddRecyclePoint(
                                 recyclePointTitle,
@@ -153,10 +178,8 @@ fun RecyclePointManagerBottomSheet(
                                 recyclePointContacts,
                                 recyclePointWorkingHours
                             )
-                        }
-                    ) {
-                        Text("Добавить", style = RemapAppTheme.typography.subheading2)
-                    }
+                        },
+                    )
                 }
             }
         ) {}
@@ -171,8 +194,8 @@ private fun RecyclePointManagerBottomSheetPreview() {
         RecyclePointManagerBottomSheet(
             isBottomSheetVisible = true,
             scaffoldState = rememberBottomSheetScaffoldState(),
+            initialRecyclePointAddress = "",
             onAddRecyclePoint = { _, _, _, _, _ -> }
         )
     }
-
 }
