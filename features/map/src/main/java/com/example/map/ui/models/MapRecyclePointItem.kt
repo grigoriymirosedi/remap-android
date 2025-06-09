@@ -24,7 +24,7 @@ fun RecyclePointDTO.toMapRecyclePointItem() = MapRecyclePointItem(
     locationHint = locationHint,
     latitude = latitude,
     longitude = longitude,
-    acceptedItems = categories,
+    acceptedItems = categories.map { it.toStringCategory() },
     workingHours = workingHours,
     phoneNumber = phoneNumber,
     imageUrl = imageUrl,
@@ -35,15 +35,16 @@ fun RecyclePointDTO.toMapRecyclePointItem() = MapRecyclePointItem(
 fun String.toStringCategory(): String {
     return when(this) {
         "0" -> "Бумага"
-        "2" -> "Плсастик"
-        "3" -> "Стекло"
-        "4" -> "Металл"
-        "5" -> "Тетра-пак"
-        "6" -> "Одежда"
-        "7" -> "Лампочки"
-        "8" -> "Крышечки"
-        "9" -> "Техника"
-        "10" -> "Батарейки"
+        "1" -> "Плсастик"
+        "2" -> "Стекло"
+        "3" -> "Металл"
+        "4" -> "Тетра-пак"
+        "5" -> "Одежда"
+        "6" -> "Лампочки"
+        "7" -> "Крышечки"
+        "8" -> "Техника"
+        "9" -> "Батарейки"
+        "10" -> "Шины"
         "11" -> "Опасное"
         else -> "Другое"
     }

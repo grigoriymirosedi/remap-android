@@ -1,7 +1,8 @@
 package com.example.map.ui.models
 
 data class MapUiState(
-    val recyclePoints: List<MapRecyclePointItem> = emptyList()
+    val recyclePoints: List<MapRecyclePointItem> = emptyList(),
+    val categoryFilters: List<String> = emptyList()
 )
 
 sealed class State {

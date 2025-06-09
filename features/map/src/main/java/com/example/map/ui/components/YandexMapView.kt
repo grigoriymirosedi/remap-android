@@ -21,6 +21,7 @@ import com.yandex.mapkit.mapview.MapView
 fun YandexMapView(
     modifier: Modifier = Modifier,
     recyclePoints: List<MapRecyclePointItem>,
+    categoryFilters: List<String>,
     latitude: Double = INIT_LATITUDE,
     longitude: Double = INIT_LONGITUDE,
     zoom: Float = DEFAULT_ZOOM,
@@ -40,6 +41,10 @@ fun YandexMapView(
         mapView.value?.updateRecyclePoints(recyclePoints)
     }
 
+    LaunchedEffect(categoryFilters) {
+        mapView.value?.updateCategoryFilters(categoryFilters)
+    }
+
     AndroidView(
         modifier = modifier,
         factory = { context ->
@@ -48,6 +53,7 @@ fun YandexMapView(
                 latitude = latitude,
                 longitude = longitude,
                 recyclePoints = recyclePoints,
+                categoryFilters = categoryFilters,
                 onRecyclePointClick = onRecyclePointClick,
                 onMapClick = onMapClick,
                 onSearchResult = onSearchResult,

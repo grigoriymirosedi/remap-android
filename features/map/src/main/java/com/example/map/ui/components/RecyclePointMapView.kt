@@ -29,6 +29,7 @@ class RecyclePointMapView(
     val latitude: Double,
     val longitude: Double,
     val recyclePoints: List<MapRecyclePointItem>,
+    var categoryFilters: List<String>,
     val zoom: Float = DEFAULT_ZOOM,
     val azimuth: Float = DEFAULT_AZIMUTH,
     val tilt: Float = DEFAULT_TILT,
@@ -42,7 +43,10 @@ class RecyclePointMapView(
 
     private var dummyRecyclePoint: MapObject? = null
 
-    private val searchManager = SearchFactory.getInstance().createSearchManager(SearchManagerType.ONLINE)
+    private val searchManager =
+        SearchFactory.getInstance().createSearchManager(SearchManagerType.ONLINE)
+
+    private val mapObjectList = mutableListOf<MapObject>()
 
     private val searchOptions = SearchOptions().apply {
         resultPageSize = 1
@@ -55,13 +59,11 @@ class RecyclePointMapView(
         true
     }
 
-    private val searchListener = object: Session.SearchListener {
+    private val searchListener = object : Session.SearchListener {
         override fun onSearchResponse(p0: Response) {
             val address = p0.collection.children.firstOrNull()?.obj?.geometry?.firstOrNull()?.point
             val name = p0.collection.children.firstOrNull()?.obj?.name
             onSearchResult(name ?: "")
-            Log.e("123", "address: $name")
-
         }
 
         override fun onSearchError(p0: Error) {
@@ -76,7 +78,7 @@ class RecyclePointMapView(
 
         override fun onMapLongTap(p0: Map, p1: Point) {
             onMapLongTap(p1.latitude, p1.longitude)
-            searchManager.submit(p1,  16, searchOptions, searchListener)
+            searchManager.submit(p1, 16, searchOptions, searchListener)
         }
     }
 
@@ -87,6 +89,20 @@ class RecyclePointMapView(
         mapWindow.map.mapObjects.addTapListener(mapObjectListener)
         mapWindow.map.addInputListener(mapOnClickListener)
         loadRecyclePoints()
+    }
+
+    fun updateCategoryFilters(categoryFilters: List<String>) {
+        this.categoryFilters = categoryFilters
+        if (categoryFilters.isEmpty()) {
+            mapObjectList.forEach { mapObject ->
+                mapObject.isVisible = true
+            }
+        } else {
+            mapObjectList.forEach { mapObject ->
+                val recyclePointObject = mapObject.userData as MapRecyclePointItem
+                mapObject.isVisible = categoryFilters.any { it in recyclePointObject.acceptedItems }
+            }
+        }
     }
 
     fun updateRecyclePoints(newPoints: List<MapRecyclePointItem>) {
@@ -106,11 +122,13 @@ class RecyclePointMapView(
 
     private fun loadRecyclePoints() {
         recyclePoints.forEach { recyclePoint ->
-            mapWindow.map.mapObjects.addPlacemark().apply {
-                geometry = Point(recyclePoint.latitude, recyclePoint.longitude)
-                setIcon(ImageProvider.fromBitmap(drawableIcon))
-                userData = recyclePoint
-            }
+            mapObjectList.add(
+                mapWindow.map.mapObjects.addPlacemark().apply {
+                    geometry = Point(recyclePoint.latitude, recyclePoint.longitude)
+                    setIcon(ImageProvider.fromBitmap(drawableIcon))
+                    userData = recyclePoint
+                }
+            )
         }
     }
 }

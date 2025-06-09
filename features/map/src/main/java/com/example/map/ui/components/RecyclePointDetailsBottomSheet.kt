@@ -74,7 +74,7 @@ fun RecyclePointDetailsBottomSheet(
                         horizontalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         recyclePointItem.acceptedItems.forEach { acceptedItem ->
-                            RecycleAcceptedItemChip(item = acceptedItem.toStringCategory())
+                            RecycleAcceptedItemChip(item = acceptedItem)
                         }
                     }
                     Text(text = recyclePointItem.name, style = recyclePointNameTextStyle)

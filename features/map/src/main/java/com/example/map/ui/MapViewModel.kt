@@ -22,6 +22,7 @@ import javax.inject.Inject
 sealed interface MapEvent {
     data object LoadRecyclePoints : MapEvent
     data class CreateDummyRecyclePoint(val latitude: Double, val longitude: Double) : MapEvent
+    data class AddCategoryFilter(val name: String) : MapEvent
     data object DeleteDummyRecyclePoint : MapEvent
 }
 
@@ -41,6 +42,10 @@ class MapViewModel @Inject constructor(
                 longitude = event.longitude
             )
 
+            is MapEvent.AddCategoryFilter -> addCategoryFilter(
+                filterName = event.name
+            )
+
             is MapEvent.DeleteDummyRecyclePoint -> deleteDummyRecyclePoint()
         }
     }
@@ -51,6 +56,32 @@ class MapViewModel @Inject constructor(
                 recyclePointRepository.getRecyclePoints().map { result ->
                     State.Success(MapUiState(result.toMapRecyclePointItem()))
                 }.single()
+            }
+        }
+    }
+
+    private fun addCategoryFilter(filterName: String) {
+        val currentState = _uiState.value
+        if (currentState is State.Success) {
+            if (currentState.data.categoryFilters.contains(filterName)) {
+                val updatedCategoryFilters = currentState.data.categoryFilters.filter { it != filterName }
+                _uiState.update {
+                    State.Success(
+                        currentState.data.copy(
+                            categoryFilters = updatedCategoryFilters
+                        )
+                    )
+                }
+            } else {
+                val updatedCategoryFilters = currentState.data.categoryFilters + filterName
+                _uiState.update {
+                    State.Success(
+                        currentState.data.copy(
+                            categoryFilters = updatedCategoryFilters
+                        )
+                    )
+                }
+
             }
         }
     }
@@ -72,14 +103,14 @@ class MapViewModel @Inject constructor(
         )
         val currentState = _uiState.value
         if (currentState is State.Success) {
-            val newRecyclePointData = currentState.data.recyclePoints.filter { !it.isDummy } + dummyRecyclePoint
+            val newRecyclePointData =
+                currentState.data.recyclePoints.filter { !it.isDummy } + dummyRecyclePoint
             _uiState.value = State.Success(
                 MapUiState(
                     recyclePoints = newRecyclePointData
                 )
             )
         }
-        Log.d("dummy", "dummy: ${_uiState.value}")
     }
 
     private fun deleteDummyRecyclePoint() {
