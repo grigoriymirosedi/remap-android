@@ -9,7 +9,7 @@ data class RecyclePointDTO(
     val name: String,
     val description: String,
     val address: String,
-    val locationHint: String,
+    val locationHint: String?,
     val latitude: Double,
     val longitude: Double,
     @SerialName("working_hours")

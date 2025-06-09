@@ -1,6 +1,7 @@
 package com.example.map.ui
 
 import android.util.Log
+import androidx.compose.runtime.currentCompositionErrors
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.repository.RecyclePointRepository
@@ -8,6 +9,7 @@ import com.example.map.ui.models.MapRecyclePointItem
 import com.example.map.ui.models.MapUiState
 import com.example.map.ui.models.State
 import com.example.map.ui.models.toMapRecyclePointItem
+import com.example.map.ui.models.toRecyclePointDTO
 import com.example.models.RecyclePointDTO
 import com.example.utils.RequestResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,6 +24,16 @@ import javax.inject.Inject
 sealed interface MapEvent {
     data object LoadRecyclePoints : MapEvent
     data class CreateDummyRecyclePoint(val latitude: Double, val longitude: Double) : MapEvent
+    data class AddRecyclePoint(
+        val name: String,
+        val description: String,
+        val address: String,
+        val locationHint: String,
+        val phoneNumber: String,
+        val workingHours: String,
+        val acceptedItems: List<String>
+    ) : MapEvent
+
     data class AddCategoryFilter(val name: String) : MapEvent
     data object DeleteDummyRecyclePoint : MapEvent
 }
@@ -42,10 +54,16 @@ class MapViewModel @Inject constructor(
                 longitude = event.longitude
             )
 
-            is MapEvent.AddCategoryFilter -> addCategoryFilter(
-                filterName = event.name
+            is MapEvent.AddCategoryFilter -> addCategoryFilter(filterName = event.name)
+            is MapEvent.AddRecyclePoint -> addRecyclePoint(
+                name = event.name,
+                description = event.description,
+                address = event.address,
+                locationHint = event.locationHint,
+                phoneNumber = event.phoneNumber,
+                workingHours = event.workingHours,
+                acceptedItems = event.acceptedItems
             )
-
             is MapEvent.DeleteDummyRecyclePoint -> deleteDummyRecyclePoint()
         }
     }
@@ -60,11 +78,41 @@ class MapViewModel @Inject constructor(
         }
     }
 
+    private fun addRecyclePoint(
+        name: String,
+        description: String,
+        address: String,
+        locationHint: String,
+        phoneNumber: String,
+        workingHours: String,
+        acceptedItems: List<String>
+    ) {
+        val currentState = _uiState.value
+        if (currentState is State.Success) {
+            val dummyUpdated = currentState.data.recyclePoints.last().copy(
+                name = name,
+                description = description,
+                address = address,
+                locationHint = locationHint,
+                phoneNumber = phoneNumber,
+                workingHours = workingHours,
+                moderationStatus = 0,
+                acceptedItems = acceptedItems,
+                isDummy = false
+            )
+            viewModelScope.launch {
+                val dtoRecyclePointItem = dummyUpdated.toRecyclePointDTO()
+                recyclePointRepository.addRecyclePoint(dtoRecyclePointItem)
+            }
+        }
+    }
+
     private fun addCategoryFilter(filterName: String) {
         val currentState = _uiState.value
         if (currentState is State.Success) {
             if (currentState.data.categoryFilters.contains(filterName)) {
-                val updatedCategoryFilters = currentState.data.categoryFilters.filter { it != filterName }
+                val updatedCategoryFilters =
+                    currentState.data.categoryFilters.filter { it != filterName }
                 _uiState.update {
                     State.Success(
                         currentState.data.copy(
@@ -81,7 +129,6 @@ class MapViewModel @Inject constructor(
                         )
                     )
                 }
-
             }
         }
     }

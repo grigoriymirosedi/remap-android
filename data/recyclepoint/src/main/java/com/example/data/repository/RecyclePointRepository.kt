@@ -6,4 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface RecyclePointRepository {
     fun getRecyclePoints(): Flow<RequestResult<List<RecyclePointDTO>>>
+
+    suspend fun addRecyclePoint(recyclePointDTO: RecyclePointDTO)
 }

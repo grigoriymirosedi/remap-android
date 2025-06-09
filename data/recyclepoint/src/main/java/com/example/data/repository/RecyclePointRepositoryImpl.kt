@@ -24,4 +24,8 @@ class RecyclePointRepositoryImpl @Inject constructor(private val remapAPI: Remap
             }
         }
     }
+
+    override suspend fun addRecyclePoint(recyclePointDTO: RecyclePointDTO) {
+        remapAPI.addRecyclePoint(recyclePointDTO = recyclePointDTO)
+    }
 }

@@ -21,17 +21,18 @@ import com.example.core.uikit.RemapTheme
 @Composable
 fun CategoryFilterChip(
     categoryFilter: CategoryFilter,
-    onClick: (String) -> Unit,
+    alpha: Float = 0.5f,
+    onClick: (String, Boolean) -> Unit,
 ) {
     var selected by remember { mutableStateOf(false) }
     FilterChip(
         colors = FilterChipDefaults.filterChipColors(
-            containerColor = RemapAppTheme.colorScheme.brandActive.copy(alpha = 0.45f),
+            containerColor = RemapAppTheme.colorScheme.brandBackground.copy(alpha = alpha),
             selectedContainerColor = RemapAppTheme.colorScheme.brandActive
         ),
         onClick = {
             selected = !selected
-            onClick(categoryFilter.displayName)
+            onClick(categoryFilter.displayName, selected)
         },
         label = {
             Text(
@@ -69,7 +70,7 @@ private fun CategoryFilterPreview(
     RemapTheme {
         CategoryFilterChip(
             categoryFilter = categoryFilter,
-            onClick = {}
+            onClick = { _, _ ->}
         )
     }
 }

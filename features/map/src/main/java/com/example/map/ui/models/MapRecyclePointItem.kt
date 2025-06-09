@@ -1,6 +1,7 @@
 package com.example.map.ui.models
 
 import com.example.models.RecyclePointDTO
+import java.util.UUID
 
 data class MapRecyclePointItem(
     val name: String,
@@ -32,10 +33,25 @@ fun RecyclePointDTO.toMapRecyclePointItem() = MapRecyclePointItem(
     isDummy = false
 )
 
+fun MapRecyclePointItem.toRecyclePointDTO() = RecyclePointDTO(
+    id = UUID.randomUUID().toString(),
+    name = name,
+    description = description,
+    address = address,
+    locationHint = locationHint,
+    latitude = latitude,
+    longitude = longitude,
+    categories = acceptedItems,
+    workingHours = workingHours,
+    phoneNumber = phoneNumber,
+    imageUrl = "",
+    moderationStatus = 0,
+)
+
 fun String.toStringCategory(): String {
     return when(this) {
         "0" -> "Бумага"
-        "1" -> "Плсастик"
+        "1" -> "Пластик"
         "2" -> "Стекло"
         "3" -> "Металл"
         "4" -> "Тетра-пак"

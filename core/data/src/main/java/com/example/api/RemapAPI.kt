@@ -23,6 +23,9 @@ interface RemapAPI {
     @GET("v1/recycle-points")
     suspend fun getRecyclePoints(): Result<List<RecyclePointDTO>>
 
+    @POST("v1/recycle-point")
+    suspend fun addRecyclePoint(@Body recyclePointDTO: RecyclePointDTO)
+
     @GET("v1/fetchUserInfo")
     suspend fun getUserInfo(): Result<ProfileInfoDTO>
 

@@ -59,6 +59,7 @@ fun RecyclePointDetailsBottomSheet(
                         .padding(horizontal = 10.dp, vertical = 4.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
+                    println(recyclePointItem.toString())
                     recyclePointItem.imageUrl?.let {
                         AsyncImage(
                             modifier = modifier.height(200.dp)

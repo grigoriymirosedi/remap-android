@@ -37,9 +37,9 @@ fun MapScreen(
     longitude: Double?,
     modifier: Modifier = Modifier,
     onEvent: (MapEvent) -> Unit,
-    uiState: State
+    uiState: State,
 ) {
-    when(uiState) {
+    when (uiState) {
         is State.Loading -> ProgressBar()
         is State.Error -> ErrorMessage()
         is State.Success -> MapScreenContent(
@@ -60,7 +60,7 @@ private fun MapScreenContent(
     modifier: Modifier = Modifier,
     uiState: MapUiState,
     onEvent: (MapEvent) -> Unit,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
 
     val scaffoldState = rememberBottomSheetScaffoldState(
@@ -114,15 +114,17 @@ private fun MapScreenContent(
         )
 
         LazyRow(
-            modifier = modifier.padding(horizontal = 8.dp, vertical = 12.dp).align(Alignment.BottomStart),
+            modifier = modifier
+                .padding(horizontal = 8.dp, vertical = 12.dp)
+                .align(Alignment.BottomStart),
             horizontalArrangement = Arrangement.spacedBy(6.dp),
 
-        ) {
+            ) {
             items(CategoryFilter.entries) { category ->
                 CategoryFilterChip(
                     categoryFilter = category,
-                    onClick = {
-                        onEvent(MapEvent.AddCategoryFilter(it))
+                    onClick = { categoryName, _ ->
+                        onEvent(MapEvent.AddCategoryFilter(categoryName))
                     }
                 )
             }
@@ -135,7 +137,22 @@ private fun MapScreenContent(
         isBottomSheetVisible = isManagerBottomSheetVisible,
         scaffoldState = scaffoldManagerState,
         initialRecyclePointAddress = scaffoldManagerAddressInitialValue,
-        onAddRecyclePoint = { _, _, _, _, _ -> }
+        onAddRecyclePoint = { name, description, address, locationHint, phoneNumber, workingHours, acceptedItems ->
+            onEvent(
+                MapEvent.AddRecyclePoint(
+                    name = name,
+                    description = description,
+                    address = address,
+                    locationHint = locationHint,
+                    phoneNumber = phoneNumber,
+                    workingHours = workingHours,
+                    acceptedItems = acceptedItems
+                )
+            )
+            coroutineScope.launch {
+                scaffoldManagerState.bottomSheetState.hide()
+            }
+        },
     )
 
     RecyclePointDetailsBottomSheet(
