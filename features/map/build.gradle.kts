@@ -56,6 +56,7 @@ dependencies {
     implementation(libs.retrofit)
 
     implementation(libs.yandex.mapkit)
+    implementation(libs.accompanist.permission)
 
     implementation(libs.androidx.hilt.compose)
     kapt(libs.hilt.compiler)

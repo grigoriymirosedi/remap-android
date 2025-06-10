@@ -2,6 +2,7 @@ package com.example.map.ui.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
@@ -15,7 +16,6 @@ import com.example.util.DEFAULT_ZOOM
 import com.example.util.INIT_LATITUDE
 import com.example.util.INIT_LONGITUDE
 import com.yandex.mapkit.MapKitFactory
-import com.yandex.mapkit.mapview.MapView
 
 @Composable
 fun YandexMapView(
@@ -31,6 +31,8 @@ fun YandexMapView(
     onSearchResult: (String) -> Unit,
     onMapClick: () -> Unit,
     onMapLongTap: (Double, Double) -> Unit,
+    mapViewReference: MutableState<RecyclePointMapView?>,
+    hasLocationPermission: Boolean
 ) {
     val context = LocalContext.current
     val mapView = remember {
@@ -57,11 +59,16 @@ fun YandexMapView(
                 onRecyclePointClick = onRecyclePointClick,
                 onMapClick = onMapClick,
                 onSearchResult = onSearchResult,
+                hasLocationPermission = hasLocationPermission,
                 onMapLongTap = onMapLongTap
-            ).also { mapView.value = it }
+            ).also {
+                mapView.value = it
+                mapViewReference.value = it
+            }
         }
     ) {
         mapView.value = it
+        mapView.value?.onPermissionChanged(hasLocationPermission)
     }
 
     LaunchedEffect(key1 = Unit) {

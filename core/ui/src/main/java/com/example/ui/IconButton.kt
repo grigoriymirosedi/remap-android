@@ -3,6 +3,8 @@ package com.example.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Tune
@@ -43,6 +45,7 @@ fun IconButton(
         contentAlignment = Alignment.Center
     ) {
         Icon(
+            modifier = Modifier.padding(6.dp).fillMaxSize(),
             imageVector = icon,
             tint = contentColor,
             contentDescription = null
