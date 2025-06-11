@@ -35,8 +35,14 @@ import androidx.compose.ui.unit.dp
 import com.example.core.ui.PointsCard
 import com.example.core.uikit.RemapAppTheme
 import com.example.core.uikit.RemapTheme
+import com.example.profile.achievements.CustomTabItem
 import com.example.profile.achievements.EMPTY_BADGES_COUNT
-import com.example.profile.achievements.tabs
+import com.example.profile.achievements.TabItemUserAchievements
+import com.example.profile.achievements.achievements
+import com.example.profile.requests.RequestItem
+import com.example.profile.requests.TabItemUserRequests
+import com.example.profile.store.TabItemEcoStore
+import com.example.profile.store.storeItems
 import com.example.ui.ProgressBar
 
 @Composable
@@ -51,6 +57,7 @@ internal fun ProfileScreen(
             email = uiState.email,
             totallyCollected = uiState.totallyCollected,
             userPoints = uiState.userPoints,
+            requests = uiState.requests,
             requestsCount = uiState.requestsCount
         )
     }
@@ -63,8 +70,27 @@ private fun ProfileScreenContent(
     email: String,
     totallyCollected: Int,
     userPoints: Int,
+    requests: List<RequestItem>,
     requestsCount: Int
 ) {
+
+    var tabs = listOf(
+        CustomTabItem(
+            text = "Достижения",
+            screen = { TabItemUserAchievements(achievements = achievements) }
+        ),
+        CustomTabItem(
+            text = "Магазин",
+            screen = { TabItemEcoStore(
+                storeItems = storeItems
+            ) }
+        ),
+        CustomTabItem(
+            text = "Заявки",
+            badgesCount = EMPTY_BADGES_COUNT,
+            screen = { TabItemUserRequests(requests = requests) }
+        )
+    )
 
     var selectedTabIndex by remember { mutableStateOf(0) }
     tabs = if(requestsCount > 0) {
@@ -233,6 +259,7 @@ private fun ProfileScreenContentPreview() {
             email = email,
             totallyCollected = totallyCollected,
             userPoints = userPoints,
+            requests = emptyList(),
             requestsCount = requestsCount
         )
     }

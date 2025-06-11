@@ -128,7 +128,6 @@ private fun HomeScreenContent(
                     RecyclePointsNearbyCard(
                         title = recyclePoint.name,
                         address = recyclePoint.address,
-                        distance = recyclePoint.distance,
                         latitude = recyclePoint.latitude,
                         longitude = recyclePoint.longitude,
                         onClick = { navigateToMap(recyclePoint.latitude, recyclePoint.longitude) }

@@ -78,8 +78,8 @@ private fun EventScreenContent(
                 imageUrl = event.imageUrl ?: "",
                 eventTitle = event.title,
                 eventDescription = event.description,
-                eventDateDay = event.date.split('-')[2],
-                eventDateMonth = (event.date.split('-')[1]).toMonthType(),
+                eventDateDay = event.date.split(' ')[0],
+                eventDateMonth = (event.date.split(' ')[1]).toMonthType(),
                 onClick = {}
             )
         }

@@ -14,8 +14,7 @@ data class RecycleEventDTO(
     val description: String,
     @SerialName("image_url")
     val imageUrl: String?,
-    @Serializable(with = LocalDateSerializer::class)
-    val date: LocalDate,
+    val date: String,
     @Serializable(with = LocalTimeSerializer::class)
     val time: LocalTime,
     val location: String,

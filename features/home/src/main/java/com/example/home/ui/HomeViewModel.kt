@@ -118,7 +118,6 @@ fun RecyclePointDTO.toRecyclePoint() = RecyclePoint(
     address = address,
     latitude = latitude,
     longitude = longitude,
-    distance = longitude,
     acceptedItems = emptyList(),
     workingHours = workingHours,
     phoneNumber = phoneNumber,

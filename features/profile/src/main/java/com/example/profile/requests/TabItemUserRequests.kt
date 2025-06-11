@@ -13,21 +13,24 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.core.uikit.RemapAppTheme
 import com.example.core.uikit.RemapTheme
+import java.time.LocalDate
 import java.util.UUID
 
 @Composable
 internal fun TabItemUserRequests(
     modifier: Modifier = Modifier,
     shape: Shape = RemapAppTheme.shape.medium,
-    requests: List<RequestItem>
+    requests: List<RequestItem>,
 ) {
     LazyColumn(
         modifier = modifier.padding(vertical = 4.dp),
@@ -35,32 +38,59 @@ internal fun TabItemUserRequests(
     ) {
         items(requests) { requestItem ->
             Card(
-                modifier = modifier.fillMaxWidth().height(100.dp),
+                modifier = modifier
+                    .fillMaxWidth()
+                    .height(110.dp),
                 shape = shape,
                 colors = CardDefaults.cardColors(
                     containerColor = Color(0xffE8F5E9)
                 )
             ) {
                 Row(
-                    modifier = modifier.fillMaxWidth()
+                    modifier = modifier
+                        .fillMaxWidth()
                         .padding(horizontal = 8.dp, vertical = 10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Column(
-                        modifier = Modifier.fillMaxHeight()
+                        modifier = Modifier.fillMaxHeight().weight(2f),
+                        verticalArrangement = Arrangement.SpaceBetween
                     ) {
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Text(
+                                text = "Заявка #" + requestItem.requestNumber,
+                                style = RemapAppTheme.typography.subheading2
+                            )
+                            Text(
+                                text = requestItem.requestTitle,
+                                style = RemapAppTheme.typography.subheading1.copy(fontWeight = FontWeight.SemiBold),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
                         Text(
-                            text = "Заявка #" + requestItem.requestNumber,
-                            style = RemapAppTheme.typography.subheading1
-                        )
-                        Text(
-                            text = requestItem.requestTitle,
-                            style = RemapAppTheme.typography.subheading1.copy(fontWeight = FontWeight.Normal)
+                            text = "Категория: " + requestItem.category,
+                            style = RemapAppTheme.typography.subheading2.copy(fontWeight = FontWeight.Normal)
                         )
                     }
-                    RequestStatusCard(
-                        requestStatus = requestItem.requestStatus
-                    )
+
+                    Column(
+                        modifier = Modifier.fillMaxHeight().weight(1.1f),
+                        horizontalAlignment = Alignment.End,
+                        verticalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        RequestStatusCard(
+                            requestStatus = requestItem.requestStatus
+                        )
+
+                        Text(
+                            text = "Дата заявки: " + requestItem.requestDate,
+                            style = RemapAppTheme.typography.metadata1
+                        )
+                    }
+
                 }
             }
         }
@@ -74,22 +104,25 @@ private fun TabItemUserRequestsPreview() {
         RequestItem(
             requestNumber = UUID.randomUUID().toString().take(10),
             requestStatus = 0,
-            requestTitle = "Подари дереву жизнь",
-            requestDate = "22.04.2025"
+            category = "Магазин",
+            requestTitle = "Пункт приёма пластиковых бутылок",
+            requestDate = "11.06.2025"
         ),
 
         RequestItem(
             requestNumber = UUID.randomUUID().toString().take(10),
             requestStatus = 1,
+            category = "Пункт переработки",
             requestTitle = "Подари дереву жизнь",
-            requestDate = "22.04.2025"
+            requestDate = "11.06.2025"
         ),
 
         RequestItem(
             requestNumber = UUID.randomUUID().toString().take(10),
             requestStatus = -1,
+            category = "Магазин",
             requestTitle = "Подари дереву жизнь",
-            requestDate = "22.04.2025"
+            requestDate = "11.06.2025"
         )
     )
     RemapTheme {

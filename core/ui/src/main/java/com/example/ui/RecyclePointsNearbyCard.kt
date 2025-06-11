@@ -29,7 +29,6 @@ import com.example.core.uikit.RemapTheme
 fun RecyclePointsNearbyCard(
     title: String,
     address: String,
-    distance: Double,
     latitude: Double,
     longitude: Double,
     width: Dp = 250.dp,
@@ -76,24 +75,11 @@ fun RecyclePointsNearbyCard(
                     maxLines = 1,
                     style = RemapAppTheme.typography.subheading2
                 )
-                Row(
-                    modifier = modifier
-                        .padding(top = 2.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    Text(
-                        text = "2.1".toString() + " км. • ",
-                        textAlign = TextAlign.End,
-                        style = RemapAppTheme.typography.bodytext2,
-                        color = Color(0xff808080)//Color(0xffA9A9A9)
-                    )
-                    Text(
-                        text = address,
-                        style = RemapAppTheme.typography.bodytext2,
-                        color = Color(0xff808080) //Color(0xff808080)
-                    )
-                }
+                Text(
+                    text = address,
+                    style = RemapAppTheme.typography.bodytext2,
+                    color = Color(0xff808080) //Color(0xff808080)
+                )
             }
         }
     }
@@ -107,13 +93,12 @@ private fun RecyclePointsNearbyCardPreview(
     distance: Double = 400.3,
     latitude: Double = 47.216686,
     longitude: Double = 39.628649,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
 ) {
     RemapTheme {
         RecyclePointsNearbyCard(
             title = title,
             address = address,
-            distance = distance,
             latitude = latitude,
             longitude = longitude,
             onClick = onClick

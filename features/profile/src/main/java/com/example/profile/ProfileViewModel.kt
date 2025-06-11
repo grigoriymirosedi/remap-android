@@ -3,6 +3,7 @@ package com.example.profile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ProfileRepository
+import com.example.profile.requests.toRequestItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -21,7 +22,8 @@ class ProfileViewModel @Inject constructor(
                 username = it.data?.username ?: "",
                 email = it.data?.email ?: "",
                 userPoints = it.data?.points ?: 0,
-                requestsCount = it.data?.requests?.size ?: 0,
+                requests = it.data?.requests?.map { it.toRequestItem() } ?: emptyList(),
+                requestsCount = it.data?.requests?.count { it.status == 0 } ?: 0,
                 totallyCollected = it.data?.let { items ->
                     items.collectedUnits[0].batteriesUnit + items.collectedUnits[0].paperUnit + items.collectedUnits[0].plasticUnit
                 } ?: 0

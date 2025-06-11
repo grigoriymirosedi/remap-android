@@ -10,7 +10,6 @@ data class RecyclePoint(
     val address: String,
     val latitude: Double,
     val longitude: Double,
-    val distance: Double = 0.0,
     val acceptedItems: List<String>,
     val workingHours: String,
     val phoneNumber: String?,
