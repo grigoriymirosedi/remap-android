@@ -200,6 +200,7 @@ private fun MapScreenContent(
         scaffoldState = scaffoldManagerState,
         initialRecyclePointAddress = scaffoldManagerAddressInitialValue,
         onAddRecyclePoint = { name, description, address, locationHint, phoneNumber, workingHours, acceptedItems ->
+            onEvent(MapEvent.DeleteDummyRecyclePoint)
             onEvent(
                 MapEvent.AddRecyclePoint(
                     name = name,

@@ -100,7 +100,7 @@ enum class CategoryFilter(
     Other(
         displayName = "Другое",
         icon = Icons.Filled.HelpOutline,
-        rawNumber = "-1",
+        rawNumber = "12",
         categoryColor = Color(0xFF9E9E9E) // серый
     );
 }
