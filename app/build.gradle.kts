@@ -88,7 +88,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.retrofit.adapters.result)
     implementation(libs.security.crypto)
-    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+    implementation(libs.retrofit2.kotlinx.serialization.converter)
     implementation(libs.androidx.security.crypto.ktx)
 
 

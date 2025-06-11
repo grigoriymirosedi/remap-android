@@ -14,6 +14,7 @@ material3-android = "1.3.1"
 core-splashscreen = "1.0.1"
 appcompat = "1.6.1"
 material = "1.11.0"
+retrofit2KotlinxSerializationConverter = "1.0.0"
 yandex-mapkit = "4.16.0-full"
 kotlin-serialization-json = "1.7.1"
 hilt-android = "2.51.1"
@@ -58,6 +59,7 @@ androidx-material3-android = { group = "androidx.compose.material3", name = "mat
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-material-android = { group = "androidx.compose.material", name = "material-android" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+retrofit2-kotlinx-serialization-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "retrofit2KotlinxSerializationConverter" }
 yandex-mapkit = { group = "com.yandex.android", name = "maps.mobile", version.ref = "yandex-mapkit" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt-android" }
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt-android" }

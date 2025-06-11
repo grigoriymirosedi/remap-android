@@ -10,6 +10,7 @@ const val REJECTED = 2
 data class RequestItem(
     val requestNumber: String,
     val requestStatus: Int, // 0 - pending, 1 - approved, 2 - rejected
+    val address: String,
     val category: String,
     val requestTitle: String,
     val requestDate: String,
@@ -18,6 +19,7 @@ data class RequestItem(
 fun RequestItemDTO.toRequestItem() = RequestItem(
     requestNumber = requestNumber.take(10),
     requestStatus = status,
+    address = address,
     requestTitle = title,
     category = category,
     requestDate = createdAt

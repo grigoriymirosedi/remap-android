@@ -40,7 +40,7 @@ internal fun TabItemUserRequests(
             Card(
                 modifier = modifier
                     .fillMaxWidth()
-                    .height(110.dp),
+                    .height(120.dp),
                 shape = shape,
                 colors = CardDefaults.cardColors(
                     containerColor = Color(0xffE8F5E9)
@@ -53,7 +53,9 @@ internal fun TabItemUserRequests(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Column(
-                        modifier = Modifier.fillMaxHeight().weight(2f),
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .weight(2f),
                         verticalArrangement = Arrangement.SpaceBetween
                     ) {
                         Column(
@@ -69,6 +71,12 @@ internal fun TabItemUserRequests(
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis
                             )
+                            Text(
+                                text = requestItem.address,
+                                style = RemapAppTheme.typography.subheading2.copy(fontWeight = FontWeight.Normal),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
                         }
                         Text(
                             text = "Категория: " + requestItem.category,
@@ -77,7 +85,9 @@ internal fun TabItemUserRequests(
                     }
 
                     Column(
-                        modifier = Modifier.fillMaxHeight().weight(1.1f),
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .weight(1f),
                         horizontalAlignment = Alignment.End,
                         verticalArrangement = Arrangement.SpaceBetween
                     ) {
@@ -86,7 +96,7 @@ internal fun TabItemUserRequests(
                         )
 
                         Text(
-                            text = "Дата заявки: " + requestItem.requestDate,
+                            text = "Дата: " + requestItem.requestDate,
                             style = RemapAppTheme.typography.metadata1
                         )
                     }
@@ -106,7 +116,8 @@ private fun TabItemUserRequestsPreview() {
             requestStatus = 0,
             category = "Магазин",
             requestTitle = "Пункт приёма пластиковых бутылок",
-            requestDate = "11.06.2025"
+            requestDate = "11.06.2025",
+            address = "ул. Мильчакова 8а"
         ),
 
         RequestItem(
@@ -114,7 +125,8 @@ private fun TabItemUserRequestsPreview() {
             requestStatus = 1,
             category = "Пункт переработки",
             requestTitle = "Подари дереву жизнь",
-            requestDate = "11.06.2025"
+            requestDate = "11.06.2025",
+            address = "ул. Мильчакова 8а"
         ),
 
         RequestItem(
@@ -122,7 +134,8 @@ private fun TabItemUserRequestsPreview() {
             requestStatus = -1,
             category = "Магазин",
             requestTitle = "Подари дереву жизнь",
-            requestDate = "11.06.2025"
+            requestDate = "11.06.2025",
+            address = "ул. Мильчакова 8а"
         )
     )
     RemapTheme {

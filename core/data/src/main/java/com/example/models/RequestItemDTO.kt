@@ -11,6 +11,7 @@ import java.time.LocalTime
 data class RequestItemDTO(
     val requestNumber: String,
     val title: String,
+    val address: String,
     val category: String,
     val status: Int,
     val createdAt: String
